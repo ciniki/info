@@ -24,11 +24,36 @@ function ciniki_info_import($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbAddModuleHistory');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'makePermalink');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'dateFormat');
 	$date_format = ciniki_users_dateFormat($ciniki);
+
+	$pages = array('artiststatement','cv', 'awards','history','donations','membership', 'boardofdirectors');
+	
+	foreach($pages as $pname) {
+		$strsql = "UPDATE ciniki_web_settings SET detail_key = 'page-about-$pname-active' "
+			. "WHERE detail_key = 'page-about$pname-active' "
+			. "";
+		$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
+		$strsql = "UPDATE ciniki_web_history SET table_key = 'page-about-$pname-active' "
+			. "WHERE table_key = 'page-about$pname-active' "
+			. "";
+		$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
+	}
+
+//
+//
+// FORCE EXIT
+//
+//
+	return array('stat'=>'ok');
+
+
+
+
 
 	//
 	// Enable the module with basic About page for every business
