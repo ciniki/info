@@ -31,6 +31,15 @@ function ciniki_info_import($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'dateFormat');
 	$date_format = ciniki_users_dateFormat($ciniki);
 
+//
+//
+// FORCE EXIT
+//
+//
+	return array('stat'=>'ok');
+
+
+/*	Code to rename page settings with - between about and name (abouthistory -> about-history).
 	$pages = array('artiststatement','cv', 'awards','history','donations','membership', 'boardofdirectors');
 	
 	foreach($pages as $pname) {
@@ -43,15 +52,7 @@ function ciniki_info_import($ciniki) {
 			. "";
 		$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
 	}
-
-//
-//
-// FORCE EXIT
-//
-//
-	return array('stat'=>'ok');
-
-
+*/
 
 
 
