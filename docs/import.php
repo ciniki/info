@@ -2,7 +2,10 @@
 //
 // Description
 // -----------
-// This method will move phone numbers from the customer record to the ciniki_customer_phones table.
+//
+//  **************************  BE CAREFUL!!!!
+//  This code will add duplicate entries if run twice.
+//  This code was designed to convert page-about%-% settings to ciniki.fino
 //
 // Arguments
 // ---------
