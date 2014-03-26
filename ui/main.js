@@ -9,7 +9,7 @@ function ciniki_info_main() {
 		//
 		// events panel
 		//
-		this.menu = new M.panel('Business Info',
+		this.menu = new M.panel('Business Information',
 			'ciniki_info_main', 'menu',
 			'mc', 'medium', 'sectioned', 'ciniki.info.main.menu');
         this.menu.sections = {
@@ -20,9 +20,9 @@ function ciniki_info_main() {
 				'4':{'label':'Awards', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.awards\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'5':{'label':'History', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.history\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'6':{'label':'Donations', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.donations\',null,\'M.ciniki_info_main.showMenu();\');'},
-				'7':{'label':'Membership', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.membership\',null,\'M.ciniki_info_main.showMenu();\');'},
-				'8':{'label':'Board of Directors', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.boardofdirectors\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'9':{'label':'Facilities', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.facilities\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'8':{'label':'Board of Directors', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.boardofdirectors\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'7':{'label':'Membership', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.membership\',null,\'M.ciniki_info_main.showMenu();\');'},
 				}},
 			};
 		this.menu.listFn = function(s, i, d) { return d.fn; }
