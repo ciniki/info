@@ -86,6 +86,31 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
 		$content['files'] = $rc['files'];
 	}
 
+	//
+	// Check if there are any children
+	//
+	$strsql = "SELECT id, title, "
+		. "primary_image_id, "
+		. "permalink, excerpt, content, "
+		. "'no' AS is_details "
+		. "FROM ciniki_info_content "
+		. "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $content['id']) . "' "
+		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+		. "";
+	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.customers', array(
+		array('container'=>'children', 'fname'=>'id',
+			'fields'=>array('id', 'name'=>'title')),
+		array('container'=>'list', 'fname'=>'id', 
+			'fields'=>array('id', 'title', 'permalink', 'image_id'=>'primary_image_id',
+				'description'=>'content', 'is_details')),
+		));
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	if( isset($rc['children']) ) {
+		$content['children'] = $rc['children'];
+	}
+
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
