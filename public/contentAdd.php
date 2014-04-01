@@ -60,6 +60,9 @@ function ciniki_info_contentAdd(&$ciniki) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'makePermalink');
 		if( isset($args['title']) && $args['title'] != '' ) {
 			$args['permalink'] = ciniki_core_makePermalink($ciniki, $args['title']);
+			if( !isset($args['parent_id']) && $args['parent_id'] == 0 ) {
+				$args['permalink'] = preg_replace('/-/', '', $args['permalink']);
+			}
 		} else {
 			$args['permalink'] = ciniki_core_makePermalink($ciniki, $args['uuid']);
 		}

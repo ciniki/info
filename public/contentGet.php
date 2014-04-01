@@ -112,6 +112,7 @@ function ciniki_info_contentGet($ciniki) {
 			if( isset($titles[$args['content_type']]) ) {
 				$content['title'] = $titles[$args['content_type']];
 				$content['permalink'] = ciniki_core_makePermalink($ciniki, $content['title']);
+				$content['permalink'] = preg_replace('/-/', '', $content['permalink']);
 			}
 
 			//

@@ -22,6 +22,7 @@ function ciniki_info_contentTitleMaps($ciniki) {
 		'7'=>'Membership',
 		'8'=>'Board of Directors',
 		'9'=>'Facilities',
+		'10'=>'Exhibition Application',
 		);
 	
 	return array('stat'=>'ok', 'maps'=>$maps);

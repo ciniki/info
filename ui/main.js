@@ -23,6 +23,7 @@ function ciniki_info_main() {
 				'9':{'label':'Facilities', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.facilities\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'8':{'label':'Board of Directors', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.boardofdirectors\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'7':{'label':'Membership', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.membership\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'10':{'label':'Exhibition Application', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.exhibitionapplication\',null,\'M.ciniki_info_main.showMenu();\');'},
 				}},
 			};
 		this.menu.listFn = function(s, i, d) { return d.fn; }
