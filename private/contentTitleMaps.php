@@ -23,6 +23,12 @@ function ciniki_info_contentTitleMaps($ciniki) {
 		'8'=>'Board of Directors',
 		'9'=>'Facilities',
 		'10'=>'Exhibition Application',
+		'11'=>'Warranty',
+//		'12'=>'Testimonials',
+//		'13'=>'Reviews',
+		'14'=>'Green Policy',
+		'15'=>'Why Us',
+		'16'=>'Privacy Policy',
 		);
 	
 	return array('stat'=>'ok', 'maps'=>$maps);

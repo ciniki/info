@@ -68,7 +68,7 @@ function ciniki_info_contentUpdate(&$ciniki) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'makePermalink');
 		if( $args['title'] != '' ) {
 			$args['permalink'] = ciniki_core_makePermalink($ciniki, $args['title']);
-			if( $item['parent_id'] == 0 ) {
+			if( $item['parent_id'] == 0 && $item['content_type'] < 11 ) {
 				$args['permalink'] = preg_replace('/-/', '', $args['permalink']);
 			}
 		} else {

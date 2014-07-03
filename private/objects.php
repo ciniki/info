@@ -60,6 +60,22 @@ function ciniki_info_objects($ciniki) {
 			),
 		'history_table'=>'ciniki_info_history',
 		);
+	$objects['testimonial'] = array(
+		'name'=>'Testimonial',
+		'sync'=>'yes',
+		'table'=>'ciniki_info_testimonials',
+		'fields'=>array(
+			'sequence'=>array(),
+			'quote'=>array(),
+			'who'=>array(),
+			'webflags'=>array(),
+			'testimonial_date'=>array(),
+			'image_id'=>array('ref'=>'ciniki.images.image'),
+			'image_caption'=>array(),
+			'image_url'=>array(),
+			),
+		'history_table'=>'ciniki_info_history',
+		);
 
 	return array('stat'=>'ok', 'objects'=>$objects);
 }

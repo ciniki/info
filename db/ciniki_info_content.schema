@@ -26,6 +26,12 @@
 #					8 - Board of Directors
 #					9 - Facilities
 #					10 - Exhibition Information (for artgalleries)
+#					11 - Warranty
+#					12 - testimonials page (separate database)
+#					13 - reviews page (separate database)
+#					14 - Green Policy
+#					15 - Why Us
+#					16 - Privacy Policy
 #
 # title:			The title for the page/section.
 # permalink:		The permalink for the page.

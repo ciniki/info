@@ -22,6 +22,12 @@ function ciniki_info_flags($ciniki, $modules) {
 		array('flag'=>array('bit'=>'8', 'name'=>'Board of Directors')),
 		array('flag'=>array('bit'=>'9', 'name'=>'Facilities')),
 		array('flag'=>array('bit'=>'10', 'name'=>'Exhibition Application')),
+		array('flag'=>array('bit'=>'11', 'name'=>'Warranty')),
+		array('flag'=>array('bit'=>'12', 'name'=>'Testimonials')),
+//		array('flag'=>array('bit'=>'13', 'name'=>'Reviews')),
+		array('flag'=>array('bit'=>'14', 'name'=>'Green Policy')),
+		array('flag'=>array('bit'=>'15', 'name'=>'Why Us')),
+		array('flag'=>array('bit'=>'16', 'name'=>'Privacy Policy')),
 		);
 
 	return array('stat'=>'ok', 'flags'=>$flags);

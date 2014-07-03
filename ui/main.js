@@ -24,6 +24,12 @@ function ciniki_info_main() {
 				'8':{'label':'Board of Directors', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.boardofdirectors\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'7':{'label':'Membership', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.membership\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'10':{'label':'Exhibition Application', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.exhibitionapplication\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'11':{'label':'Warranty', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.warranty\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'12':{'label':'Testimonials', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.testimonials\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'13':{'label':'Reviews', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.reviews\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'14':{'label':'Green Policy', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.greenpolicy\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'15':{'label':'Why Us', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.whyus\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'16':{'label':'Privacy Policy', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.privacypolicy\',null,\'M.ciniki_info_main.showMenu();\');'},
 				}},
 			};
 		this.menu.listFn = function(s, i, d) { return d.fn; }
