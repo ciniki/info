@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This method will return the list of testimonials for a business.
+// This method will return the list of content and their titles for use in the interface.
 //
 // Arguments
 // ---------
@@ -30,7 +30,7 @@ function ciniki_info_contentList($ciniki) {
     // Check access to business_id as owner, or sys admin. 
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'private', 'checkAccess');
-    $rc = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.testimonialList');
+    $rc = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.contentList');
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
