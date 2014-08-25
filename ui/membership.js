@@ -21,6 +21,9 @@ function ciniki_info_membership() {
 				'primary_image_caption':{'label':'Caption', 'type':'text'},
 //				'primary_image_url':{'label':'URL', 'type':'text'},
 			}},
+			'_title':{'label':'', 'fields':{
+				'title':{'label':'Title', 'type':'text', 'hint':'Membership?'},
+			}},
 			'_content':{'label':'Membership Info', 'fields':{
 				'content':{'label':'', 'type':'textarea', 'size':'large', 'hidelabel':'yes'},
 			}},

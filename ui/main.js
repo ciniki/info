@@ -67,7 +67,21 @@ function ciniki_info_main() {
 	}
 
 	this.showMenu = function(cb) {
-		this.menu.refresh();
-		this.menu.show(cb);
+		M.api.getJSONCb('ciniki.info.contentList', {'business_id':M.curBusinessID}, function(rsp) {
+			if( rsp.stat != 'ok' ) {
+				M.api.err(rsp);
+				return false;
+			}
+			var p = M.ciniki_info_main.menu;
+			if( rsp.content != null ) {
+				for(i in rsp.content) {
+					p.sections.content.list[rsp.content[i].content.id].label = rsp.content[i].content.title;
+				}
+			}
+			p.refresh();
+			p.show(cb);
+		});
+//		this.menu.refresh();
+//		this.menu.show(cb);
 	};
 };
