@@ -68,6 +68,7 @@ function ciniki_info_contentGet($ciniki) {
 		$strsql .= "AND ciniki_info_content.id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' ";
 	} elseif( isset($args['content_type']) && $args['content_type'] != '' && $args['content_type'] != '0' ) {
 		$strsql .= "AND ciniki_info_content.content_type = '" . ciniki_core_dbQuote($ciniki, $args['content_type']) . "' ";
+		$strsql .= "AND ciniki_info_content.parent_id = 0 ";
 	} else {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1677', 'msg'=>'You must specify the content you want.'));
 	}
