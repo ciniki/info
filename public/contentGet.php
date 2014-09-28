@@ -23,6 +23,7 @@ function ciniki_info_contentGet($ciniki) {
 		'content_type'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Content Type'),
 		'images'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Images'),
 		'files'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Files'),
+		'sponsors'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Sponsors'),
 		'children'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Children'),
         )); 
     if( $rc['stat'] != 'ok' ) { 
@@ -219,6 +220,24 @@ function ciniki_info_contentGet($ciniki) {
 			$content['children'] = $rc['children'];
 		} else {
 			$content['children'] = array();
+		}
+	}
+
+	//
+	// Get any sponsors for the content
+	//
+	if( isset($args['sponsors']) && $args['sponsors'] == 'yes' 
+		&& isset($ciniki['business']['modules']['ciniki.sponsors']) 
+		&& ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+		) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'hooks', 'sponsorList');
+		$rc = ciniki_sponsors_hooks_sponsorList($ciniki, $args['business_id'], 
+			array('object'=>'ciniki.info.content', 'object_id'=>$args['content_id']));
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['sponsors']) ) {
+			$content['sponsors'] = $rc['sponsors'];
 		}
 	}
 

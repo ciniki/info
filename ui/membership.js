@@ -34,6 +34,10 @@ function ciniki_info_membership() {
 				'addTxt':'Add Application',
 				'addFn':'M.ciniki_info_membership.showFileEdit(\'M.ciniki_info_membership.updateFiles();\',M.ciniki_info_membership.edit.content_id,0);',
 				},
+			'sponsors':{'label':'Sponsors', 'type':'simplegrid', 'num_cols':1,
+				'addTxt':'Add Sponsor',
+				'addFn':'M.startApp(\'ciniki.sponsors.refedit\',null,\'M.ciniki_info_membership.updateSponsors();\',\'mc\',{\'object\':\'ciniki.info.content\',\'object_id\':M.ciniki_info_membership.edit.content_id,\'sponsor_id\':\'0\'});',
+				},
 			'_buttons':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_info_membership.saveContent();'},
 			}},
@@ -57,10 +61,16 @@ function ciniki_info_membership() {
 			return this.data[i];
 		};
 		this.edit.cellValue = function(s, i, j, d) {
-			if( j == 0 ) { return d.file.name; }
+			if( s == 'files' && j == 0 ) { return d.file.name; }
+			if( s == 'sponsors' && j == 0 ) { return d.sponsor.title; }
 		};
 		this.edit.rowFn = function(s, i, d) {
-			return 'M.ciniki_info_membership.showFileEdit(\'M.ciniki_info_membership.updateFiles();\',M.ciniki_info_membership.edit.content_id,\'' + d.file.id + '\');';
+			if( s == 'files' ) {
+				return 'M.ciniki_info_membership.showFileEdit(\'M.ciniki_info_membership.updateFiles();\',M.ciniki_info_membership.edit.content_id,\'' + d.file.id + '\');';
+			}
+			if( s == 'sponsors' ) {
+				return 'M.startApp(\'ciniki.sponsors.refedit\',null,\'M.ciniki_info_membership.updateSponsors();\',\'mc\',{\'ref_id\':\'' + d.sponsor.ref_id + '\'});';
+			}
 		};
 		this.edit.addButton('save', 'Save', 'M.ciniki_info_membership.saveContent();');
 		this.edit.addClose('Cancel');
@@ -141,12 +151,19 @@ function ciniki_info_membership() {
 			return false;
 		}
 
+		if( M.curBusiness.modules['ciniki.sponsors'] != null
+			&& (M.curBusiness.modules['ciniki.sponsors'].flags&0x02) ) {
+			this.edit.sections.sponsors.visible = 'yes';
+		} else {
+			this.edit.sections.sponsors.visible = 'no';
+		}
+
 		this.showEdit(cb);
 	}
 
 	this.showEdit = function(cb) {
 		M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
-			'content_type':M.ciniki_info_membership.content_type, 'files':'yes'}, function(rsp) {
+			'content_type':M.ciniki_info_membership.content_type, 'files':'yes', 'sponsors':'yes'}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
 					M.api.err(rsp);
 					return false;
@@ -209,6 +226,20 @@ function ciniki_info_membership() {
 				var p = M.ciniki_info_membership.edit;
 				p.data.files = rsp.content.files;
 				p.refreshSection('files');
+				p.show();
+			});
+	};
+
+	this.updateSponsors = function() {
+		M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+			'content_id':M.ciniki_info_membership.edit.content_id, 'sponsors':'yes'}, function(rsp) {
+				if( rsp.stat != 'ok' ) {
+					M.api.err(rsp);
+					return false;
+				}
+				var p = M.ciniki_info_membership.edit;
+				p.data.sponsors = rsp.content.sponsors;
+				p.refreshSection('sponsors');
 				p.show();
 			});
 	};

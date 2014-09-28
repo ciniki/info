@@ -111,6 +111,23 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
 		$content['children'] = $rc['children'];
 	}
 
+	//
+	// Get any sponsors for this page, and that references for sponsors is enabled
+	//
+	if( isset($ciniki['business']['modules']['ciniki.sponsors']) 
+		&& ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+		) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'web', 'sponsorRefList');
+		$rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $business_id, 
+			'ciniki.info.content', $content['id']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['sponsors']) ) {
+			$content['sponsors'] = $rc['sponsors'];
+		}
+	}
+
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
