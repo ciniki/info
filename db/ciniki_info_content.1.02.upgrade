@@ -1,6 +1,0 @@
-#
-# Upgrade the content to allow for sponsor information
-#
-ALTER TABLE ciniki_info_content ADD COLUMN sponsors_label varchar(250) not null AFTER content;
-ALTER TABLE ciniki_info_content ADD COLUMN sponsors_content varchar(2000) not null AFTER sponsors_label;
-ALTER TABLE ciniki_info_content COMMENT='v1.02';
