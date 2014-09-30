@@ -27,8 +27,6 @@ function ciniki_info_objects($ciniki) {
 			'primary_image_url'=>array(),
 			'excerpt'=>array(),
 			'content'=>array(),
-			'sponsors_label'=>array(),
-			'sponsors_content'=>array(),
 			),
 		'history_table'=>'ciniki_info_history',
 		);

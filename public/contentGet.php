@@ -58,9 +58,7 @@ function ciniki_info_contentGet($ciniki) {
 		. "ciniki_info_content.primary_image_caption, "
 		. "ciniki_info_content.primary_image_url, "
 		. "ciniki_info_content.excerpt, "
-		. "ciniki_info_content.content, "
-		. "ciniki_info_content.sponsors_label, "
-		. "ciniki_info_content.sponsors_content "
+		. "ciniki_info_content.content "
 		. "FROM ciniki_info_content "
 		. "WHERE ciniki_info_content.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "";
@@ -81,8 +79,7 @@ function ciniki_info_contentGet($ciniki) {
 		array('container'=>'content', 'fname'=>'id', 'name'=>'content',
 			'fields'=>array('id', 'parent_id', 'content_type',
 				'title', 'permalink', 'sequence', 
-				'primary_image_id', 'primary_image_caption', 'primary_image_url', 'excerpt', 'content',
-				'sponsors_label', 'sponsors_content')),
+				'primary_image_id', 'primary_image_caption', 'primary_image_url', 'excerpt', 'content')),
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -103,8 +100,6 @@ function ciniki_info_contentGet($ciniki) {
 				'primary_image_url'=>'',
 				'excerpt'=>'',
 				'content'=>'',
-				'sponsors_label'=>'',
-				'sponsors_content'=>'',
 				'images'=>array(),
 				'files'=>array(),
 				'children'=>array(),
