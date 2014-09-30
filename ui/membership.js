@@ -35,8 +35,10 @@ function ciniki_info_membership() {
 				'addFn':'M.ciniki_info_membership.showFileEdit(\'M.ciniki_info_membership.updateFiles();\',M.ciniki_info_membership.edit.content_id,0);',
 				},
 			'sponsors':{'label':'Sponsors', 'type':'simplegrid', 'num_cols':1,
-				'addTxt':'Add Sponsor',
-				'addFn':'M.startApp(\'ciniki.sponsors.refedit\',null,\'M.ciniki_info_membership.updateSponsors();\',\'mc\',{\'object\':\'ciniki.info.content\',\'object_id\':M.ciniki_info_membership.edit.content_id,\'sponsor_id\':\'0\'});',
+				'addTxt':'Manage Sponsors',
+				'addFn':'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_info_membership.updateSponsors();\',\'mc\',{\'object\':\'ciniki.info.content\',\'object_id\':M.ciniki_info_membership.edit.content_id});',
+//				'moreTxt':'Manage Sponsors',
+//				'moreFn':'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_info_membership.updateSponsors();\',\'mc\',{\'object\':\'ciniki.info.content\',\'object_id\':M.ciniki_info_membership.edit.content_id,\'sponsor_id\':\'0\'});',
 				},
 			'_buttons':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_info_membership.saveContent();'},
@@ -69,7 +71,7 @@ function ciniki_info_membership() {
 				return 'M.ciniki_info_membership.showFileEdit(\'M.ciniki_info_membership.updateFiles();\',M.ciniki_info_membership.edit.content_id,\'' + d.file.id + '\');';
 			}
 			if( s == 'sponsors' ) {
-				return 'M.startApp(\'ciniki.sponsors.refedit\',null,\'M.ciniki_info_membership.updateSponsors();\',\'mc\',{\'ref_id\':\'' + d.sponsor.ref_id + '\'});';
+				return 'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_info_membership.updateSponsors();\',\'mc\',{\'ref_id\':\'' + d.sponsor.ref_id + '\'});';
 			}
 		};
 		this.edit.addButton('save', 'Save', 'M.ciniki_info_membership.saveContent();');

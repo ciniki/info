@@ -31,6 +31,8 @@ function ciniki_info_contentUpdate(&$ciniki) {
 		'primary_image_url'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Image URL'),
 		'excerpt'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Excerpt'),
         'content'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Content'), 
+        'sponsors_label'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Sponsors Label'), 
+        'sponsors_content'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Sponsors Content'), 
         )); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
