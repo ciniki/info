@@ -25,10 +25,12 @@ function ciniki_info_contentUpdate(&$ciniki) {
         'content_type'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Content Type'), 
         'title'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Title'), 
         'permalink'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Permalink'), 
+		'category'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Category'),
 		'sequence'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Sequence'),
 		'primary_image_id'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Image'),
 		'primary_image_caption'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Image Caption'),
 		'primary_image_url'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Image URL'),
+		'child_title'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Children Title'),
 		'excerpt'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Excerpt'),
         'content'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Content'), 
         )); 

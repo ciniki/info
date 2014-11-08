@@ -35,6 +35,10 @@
 #
 # title:			The title for the page/section.
 # permalink:		The permalink for the page.
+#
+# category:			This is used for child content to display lists in 
+#					categories.
+#
 # sequence: 		The display order for nested content.
 #
 # excerpt:			The short description for use in lists.  If not 
@@ -57,14 +61,16 @@ create table ciniki_info_content (
 	content_type smallint unsigned not null,
 	title varchar(150) not null,
 	permalink varchar(150) not null,
+	category varchar(150) not null,
 	sequence tinyint unsigned not null,
 	primary_image_id int not null,
 	primary_image_caption varchar(250) not null,
 	primary_image_url varchar(250) not null,
+	child_title varchar(150) not null,
 	excerpt varchar(10000) not null,
 	content varchar(30000) not null,
 	date_added datetime not null,
 	last_updated datetime not null,
 	primary key (id),
 	index sync (business_id, uuid, last_updated)
-) ENGINE='InnoDB', COMMENT='v1.01';
+) ENGINE='InnoDB', COMMENT='v1.02';

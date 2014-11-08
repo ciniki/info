@@ -1,0 +1,5 @@
+#
+#
+ALTER TABLE ciniki_info_content ADD COLUMN category varchar(150) not null AFTER permalink;
+ALTER TABLE ciniki_info_content ADD COLUMN child_title varchar(150) not null AFTER primary_image_url;
+ALTER TABLE ciniki_info_content COMMENT='v1.02';

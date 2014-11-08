@@ -53,10 +53,12 @@ function ciniki_info_contentGet($ciniki) {
 		. "ciniki_info_content.content_type, "
 		. "ciniki_info_content.title, "
 		. "ciniki_info_content.permalink, "
+		. "ciniki_info_content.category, "
 		. "ciniki_info_content.sequence, "
 		. "ciniki_info_content.primary_image_id, "
 		. "ciniki_info_content.primary_image_caption, "
 		. "ciniki_info_content.primary_image_url, "
+		. "ciniki_info_content.child_title, "
 		. "ciniki_info_content.excerpt, "
 		. "ciniki_info_content.content "
 		. "FROM ciniki_info_content "
@@ -78,8 +80,9 @@ function ciniki_info_contentGet($ciniki) {
 	$rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.info', array(
 		array('container'=>'content', 'fname'=>'id', 'name'=>'content',
 			'fields'=>array('id', 'parent_id', 'content_type',
-				'title', 'permalink', 'sequence', 
-				'primary_image_id', 'primary_image_caption', 'primary_image_url', 'excerpt', 'content')),
+				'title', 'permalink', 'category', 'sequence', 
+				'primary_image_id', 'primary_image_caption', 'primary_image_url', 
+				'child_title', 'excerpt', 'content')),
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -94,10 +97,12 @@ function ciniki_info_contentGet($ciniki) {
 				'content_type'=>$args['content_type'],
 				'title'=>'',
 				'permalink'=>'',
+				'category'=>'',
 				'sequence'=>'1',
 				'primary_image_id'=>'0',
 				'primary_image_caption'=>'',
 				'primary_image_url'=>'',
+				'child_title'=>'',
 				'excerpt'=>'',
 				'content'=>'',
 				'images'=>array(),

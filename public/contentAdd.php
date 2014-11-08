@@ -21,10 +21,12 @@ function ciniki_info_contentAdd(&$ciniki) {
         'content_type'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Content Type'), 
         'title'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Title'), 
         'permalink'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Permalink'), 
+		'category'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Category'),
 		'sequence'=>array('required'=>'no', 'default'=>'1', 'blank'=>'yes', 'name'=>'Sequence'),
 		'primary_image_id'=>array('required'=>'yes', 'blank'=>'yes', 'name'=>'Image'),
 		'primary_image_caption'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Image Caption'),
 		'primary_image_url'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Image URL'),
+		'child_title'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Children Title'),
 		'excerpt'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Excerpt'),
         'content'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Content'), 
         )); 

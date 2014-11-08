@@ -47,6 +47,13 @@ function ciniki_info_rental() {
 				'addFn':'M.startApp(\'ciniki.info.contentfiles\',null,\'M.ciniki_info_rental.updateFiles();\',\'mc\',{\'content_id\':M.ciniki_info_rental.edit.content_id});',
 //				'addFn':'M.ciniki_info_rental.showFileEdit(\'M.ciniki_info_rental.updateFiles();\',M.ciniki_info_rental.edit.content_id,0);',
 				},
+			'_child_title':{'label':'Suppliers', 'fields':{
+				'child_title':{'label':'Title', 'type':'text', 'hint':'Suppliers'},
+			}},
+			'children':{'label':'', 'type':'simplegrid', 'num_cols':1, 
+				'addTxt':'Add Supplier',
+				'addFn':'M.ciniki_info_rental.showChildEdit(\'M.ciniki_info_rental.updateChildren();\',M.ciniki_info_rental.edit.content_id,0);',
+				},
 			'_buttons':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_info_rental.saveContent();'},
 			}},
@@ -92,10 +99,16 @@ function ciniki_info_rental() {
 			return this.data[i];
 		};
 		this.edit.cellValue = function(s, i, j, d) {
-			if( j == 0 ) { return d.file.name; }
+			if( s == 'files' && j == 0 ) { return d.file.name; }
+			if( s == 'children' && j == 0 ) { return d.child.title; }
 		};
 		this.edit.rowFn = function(s, i, d) {
-			return 'M.startApp(\'ciniki.info.contentfiles\',null,\'M.ciniki_info_rental.updateFiles();\',\'mc\',{\'file_id\':\'' + d.file.id + '\'});';
+			if( s == 'children' ) {
+				return 'M.ciniki_info_rental.showChildEdit(\'M.ciniki_info_rental.updateChildren();\',M.ciniki_info_rental.edit.content_id,\'' + d.child.id + '\');';
+			}
+			if( s == 'files' ) {
+				return 'M.startApp(\'ciniki.info.contentfiles\',null,\'M.ciniki_info_rental.updateFiles();\',\'mc\',{\'file_id\':\'' + d.file.id + '\'});';
+			}
 		};
 		this.edit.thumbSrc = function(s, i, d) {
 			if( d.image.image_data != null && d.image.image_data != '' ) {
@@ -117,6 +130,57 @@ function ciniki_info_rental() {
 		};
 		this.edit.addButton('save', 'Save', 'M.ciniki_info_rental.saveContent();');
 		this.edit.addClose('Cancel');
+
+		//
+		// The child edit panel 
+		//
+		this.childedit = new M.panel('Suppliers',
+			'ciniki_info_rental', 'childedit',
+			'mc', 'medium mediumaside', 'sectioned', 'ciniki.info.rental.childedit');
+		this.childedit.data = {};	
+		this.childedit.parent_id = 0;
+		this.childedit.content_id = 0;
+		this.childedit.sections = {
+			'_image':{'label':'', 'aside':'yes', 'fields':{
+				'primary_image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 
+					'controls':'all', 'history':'no'},
+			}},
+//			'_image_caption':{'label':'', 'aside':'yes', 'fields':{
+//				'primary_image_caption':{'label':'Caption', 'type':'text'},
+//				'primary_image_url':{'label':'URL', 'type':'text'},
+//			}},
+			'_title':{'label':'', 'fields':{
+				'title':{'label':'Name', 'type':'text'},
+				'category':{'label':'Category', 'type':'text'},
+			}},
+			'_content':{'label':'Supplier Details', 'fields':{
+				'content':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
+			}},
+			'_buttons':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_info_rental.saveChildContent();'},
+				'delete':{'label':'Delete', 'fn':'M.ciniki_info_rental.deleteChild();'},
+			}},
+		};
+		this.childedit.fieldHistoryArgs = function(s, i) {
+			return {'method':'ciniki.info.contentHistory', 'args':{'business_id':M.curBusinessID,
+				'content_id':this.content_id, 'field':i}};
+		};
+		this.childedit.addDropImage = function(iid) {
+			M.ciniki_info_rental.childedit.setFieldValue('primary_image_id', iid, null, null);
+			return true;
+		};
+		this.childedit.deleteImage = function(fid) {
+			this.setFieldValue(fid, 0, null, null);
+			return true;
+		};
+		this.childedit.sectionData = function(s) { 
+			return this.data[s];
+		};
+		this.childedit.fieldValue = function(s, i, j, d) {
+			return this.data[i];
+		};
+		this.childedit.addButton('save', 'Save', 'M.ciniki_info_rental.saveChildContent();');
+		this.childedit.addClose('Cancel');
 	}
 
 	this.start = function(cb, appPrefix, aG) {
@@ -137,7 +201,7 @@ function ciniki_info_rental() {
 
 	this.showEdit = function(cb) {
 		M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
-			'content_type':this.content_type, 'images':'yes', 'files':'yes'}, function(rsp) {
+			'content_type':this.content_type, 'images':'yes', 'files':'yes', 'children':'list'}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
 					M.api.err(rsp);
 					return false;
@@ -181,5 +245,84 @@ function ciniki_info_rental() {
 				});
 		}
 		return true;
+	};
+
+	this.updateChildren = function() {
+		M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+			'content_id':M.ciniki_info_rental.edit.content_id, 'children':'list'}, function(rsp) {
+				if( rsp.stat != 'ok' ) {
+					M.api.err(rsp);
+					return false;
+				}
+				var p = M.ciniki_info_rental.edit;
+				p.data.children = rsp.content.children;
+				p.refreshSection('children');
+				p.show();
+			});
+	};
+
+	this.showChildEdit = function(cb, pid, cid) {
+		if( pid != null ) { this.childedit.parent_id = pid; }
+		if( cid != null ) { this.childedit.content_id = cid; }
+		if( this.childedit.content_id > 0 ) {
+			M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+				'content_id':this.childedit.content_id}, function(rsp) {
+					if( rsp.stat != 'ok' ) {
+						M.api.err(rsp);
+						return false;
+					}
+					var p = M.ciniki_info_rental.childedit;
+					p.data = rsp.content;
+					p.refresh();
+					p.show(cb);
+				});
+		} else {
+			this.childedit.reset();
+			this.childedit.data = {};
+			this.childedit.refresh();
+			this.childedit.show(cb);
+		}
+	};
+
+	this.saveChildContent = function() {
+		if( this.childedit.content_id > 0 ) {
+			var c = this.childedit.serializeFormData('no');
+			if( c != null ) {
+				M.api.postJSONFormData('ciniki.info.contentUpdate', 
+					{'business_id':M.curBusinessID, 'content_id':this.childedit.content_id}, c, function(rsp) {
+						if( rsp.stat != 'ok' ) {
+							M.api.err(rsp);
+							return false;
+						}
+						M.ciniki_info_rental.childedit.close();
+					});
+			} else {
+				this.childedit.close();
+			}
+		} else {
+			var c = this.childedit.serializeFormData('yes');
+			M.api.postJSONFormData('ciniki.info.contentAdd', 
+				{'business_id':M.curBusinessID, 'content_type':this.content_type,
+				'parent_id':this.childedit.parent_id}, c, function(rsp) {
+					if( rsp.stat != 'ok' ) {
+						M.api.err(rsp);
+						return false;
+					}
+					M.ciniki_info_rental.childedit.close();
+				});
+		}
+	};
+
+	this.deleteChild = function() {
+		if( confirm('Are you sure you want to delete this supplier?') ) {
+			var rsp = M.api.getJSONCb('ciniki.info.contentDelete', {'business_id':M.curBusinessID, 
+				'content_id':this.childedit.content_id}, function(rsp) {
+					if( rsp.stat != 'ok' ) {
+						M.api.err(rsp);
+						return false;
+					}
+					M.ciniki_info_rental.childedit.close();
+				});
+		}
 	};
 }

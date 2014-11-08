@@ -22,6 +22,7 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
 		. "ciniki_info_content.primary_image_id, "
 		. "ciniki_info_content.primary_image_caption, "
 		. "ciniki_info_content.primary_image_url, "
+		. "ciniki_info_content.child_title, "
 		. "ciniki_info_content.excerpt, "
 		. "ciniki_info_content.content, "
 		. "ciniki_info_content_images.image_id, "
@@ -54,7 +55,7 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
 			'fields'=>array('id', 'parent_id', 'content_type',
 				'title', 'permalink', 'sequence', 
 				'image_id'=>'primary_image_id', 'image_caption'=>'primary_image_caption', 
-				'image_url'=>'primary_image_url', 'excerpt', 'content')),
+				'image_url'=>'primary_image_url', 'child_title', 'excerpt', 'content')),
 		array('container'=>'images', 'fname'=>'image_id', 
 			'fields'=>array('image_id', 'title'=>'image_name', 'permalink'=>'image_permalink',
 				'description'=>'image_description', 'last_updated'=>'image_last_updated')),
@@ -91,15 +92,18 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
 	//
 	$strsql = "SELECT id, title, "
 		. "primary_image_id, "
-		. "permalink, excerpt, content, "
+		. "permalink, category, excerpt, content, "
 		. "'no' AS is_details "
 		. "FROM ciniki_info_content "
 		. "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $content['id']) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+		. "ORDER BY category, sequence, title "
 		. "";
 	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.customers', array(
-		array('container'=>'children', 'fname'=>'id',
-			'fields'=>array('id', 'name'=>'title')),
+//		array('container'=>'children', 'fname'=>'id',
+//			'fields'=>array('id', 'name'=>'title')),
+		array('container'=>'children', 'fname'=>'category', 
+			'fields'=>array('name'=>'category')),
 		array('container'=>'list', 'fname'=>'id', 
 			'fields'=>array('id', 'title', 'permalink', 'image_id'=>'primary_image_id',
 				'description'=>'content', 'is_details')),
@@ -107,8 +111,22 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
-	if( isset($rc['children']) ) {
-		$content['children'] = $rc['children'];
+	if( isset($rc['children']) ) {	
+		// If only one category or no category, then display as a list.
+		if( count($rc['children']) == 1 ) {
+			$content['children'] = array();
+			$list = array_pop($rc['children']);
+			$list = $list['list'];
+			foreach($list as $cid => $child) {
+				$content['children'][$child['id']] = array(
+					'id'=>$child['id'], 
+					'name'=>$child['title'], 
+					'list'=>array($cid=>$child),
+					);
+			}
+		} else {
+			$content['child_categories'] = $rc['children'];
+		}
 	}
 
 	//
