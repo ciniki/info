@@ -29,6 +29,8 @@ function ciniki_info_contentTitleMaps($ciniki) {
 		'14'=>'Green Policy',
 		'15'=>'Why Us',
 		'16'=>'Privacy Policy',
+		'17'=>'Volunteer',
+		'18'=>'Rental',
 		);
 	
 	return array('stat'=>'ok', 'maps'=>$maps);

@@ -32,6 +32,11 @@ function ciniki_info_flags($ciniki, $modules) {
 		array('flag'=>array('bit'=>'14', 'name'=>'Green Policy')),
 		array('flag'=>array('bit'=>'15', 'name'=>'Why Us')),
 		array('flag'=>array('bit'=>'16', 'name'=>'Privacy Policy')),
+		// 0x010000
+		array('flag'=>array('bit'=>'17', 'name'=>'Volunteer')),
+		array('flag'=>array('bit'=>'18', 'name'=>'Rentals')),
+//		array('flag'=>array('bit'=>'19', 'name'=>'')),
+//		array('flag'=>array('bit'=>'20', 'name'=>'')),
 		);
 
 	return array('stat'=>'ok', 'flags'=>$flags);

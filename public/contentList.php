@@ -128,6 +128,14 @@ function ciniki_info_contentList($ciniki) {
 		$content[] = array('content'=>array('id'=>'16', 
 			'title'=>((isset($titles['16']['title'])&&$titles['16']['title']!='')?$titles['16']['title']:'Privacy Policy')));
 	}
+	if( ($flags&0x010000) > 0 ) {
+		$content[] = array('content'=>array('id'=>'17', 
+			'title'=>((isset($titles['17']['title'])&&$titles['17']['title']!='')?$titles['17']['title']:'Volunteer')));
+	}
+	if( ($flags&0x020000) > 0 ) {
+		$content[] = array('content'=>array('id'=>'18', 
+			'title'=>((isset($titles['18']['title'])&&$titles['18']['title']!='')?$titles['18']['title']:'Rental')));
+	}
 
 	return array('stat'=>'ok', 'content'=>$content);
 }

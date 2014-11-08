@@ -30,6 +30,8 @@ function ciniki_info_main() {
 				'14':{'label':'Green Policy', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.greenpolicy\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'15':{'label':'Why Us', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.whyus\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'16':{'label':'Privacy Policy', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.privacypolicy\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'17':{'label':'Volunteer', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.volunteer\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'18':{'label':'Rental', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.rental\',null,\'M.ciniki_info_main.showMenu();\');'},
 				}},
 			};
 		this.menu.listFn = function(s, i, d) { return d.fn; }
