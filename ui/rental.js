@@ -38,7 +38,7 @@ function ciniki_info_rental() {
 			'_images':{'label':'', 'type':'simplegrid', 'num_cols':1,
 				'addTxt':'Add Additional Image',
 				'addFn':'M.startApp(\'ciniki.info.images\',null,\'M.ciniki_info_rental.edit.addDropImageRefresh();\',\'mc\',{\'content_id\':M.ciniki_info_rental.edit.content_id,\'add\':\'yes\'});',
-				},
+			},
 			'files':{'label':'Files',
 				'type':'simplegrid', 'num_cols':1,
 				'headerValues':null,
@@ -46,7 +46,7 @@ function ciniki_info_rental() {
 				'addTxt':'Add File',
 				'addFn':'M.startApp(\'ciniki.info.contentfiles\',null,\'M.ciniki_info_rental.updateFiles();\',\'mc\',{\'content_id\':M.ciniki_info_rental.edit.content_id});',
 //				'addFn':'M.ciniki_info_rental.showFileEdit(\'M.ciniki_info_rental.updateFiles();\',M.ciniki_info_rental.edit.content_id,0);',
-				},
+			},
 			'_child_title':{'label':'Suppliers', 'fields':{
 				'child_title':{'label':'Title', 'type':'text', 'hint':'Suppliers'},
 			}},

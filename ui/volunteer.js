@@ -15,7 +15,14 @@ function ciniki_info_volunteer() {
 		this.edit.sections = {
 			'_image':{'label':'', 'aside':'yes', 'fields':{
 				'primary_image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 
-					'controls':'all', 'history':'no'},
+					'controls':'all', 'history':'no',
+					'addDropImage':function(iid) {
+						M.ciniki_info_volunteer.edit.setFieldValue('primary_image_id', iid, null, null);
+						return true;
+						},
+					'addDropImageRefresh':'',
+					'deleteImage':'M.ciniki_info_volunteer.edit.deletePrimaryImage',
+					},
 			}},
 			'_image_caption':{'label':'', 'aside':'yes', 'fields':{
 				'primary_image_caption':{'label':'Caption', 'type':'text'},
@@ -27,6 +34,18 @@ function ciniki_info_volunteer() {
 			'_content':{'label':'Volunteer', 'fields':{
 				'content':{'label':'', 'type':'textarea', 'size':'large', 'hidelabel':'yes'},
 			}},
+			'images':{'label':'Gallery', 'type':'simplethumbs'},
+			'_images':{'label':'', 'type':'simplegrid', 'num_cols':1,
+				'addTxt':'Add Additional Image',
+				'addFn':'M.startApp(\'ciniki.info.images\',null,\'M.ciniki_info_volunteer.edit.addDropImageRefresh();\',\'mc\',{\'content_id\':M.ciniki_info_volunteer.edit.content_id,\'add\':\'yes\'});',
+			},
+			'files':{'label':'Files',
+				'type':'simplegrid', 'num_cols':1,
+				'headerValues':null,
+				'cellClasses':[''],
+				'addTxt':'Add File',
+				'addFn':'M.startApp(\'ciniki.info.contentfiles\',null,\'M.ciniki_info_volunteer.updateFiles();\',\'mc\',{\'content_id\':M.ciniki_info_volunteer.edit.content_id});',
+			},
 			'_buttons':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_info_volunteer.saveContent();'},
 			}},
@@ -35,12 +54,34 @@ function ciniki_info_volunteer() {
 			return {'method':'ciniki.info.contentHistory', 'args':{'business_id':M.curBusinessID,
 				'content_id':this.content_id, 'field':i}};
 		};
-		this.edit.addDropImage = function(iid) {
-			M.ciniki_info_volunteer.edit.setFieldValue('primary_image_id', iid, null, null);
+		this.edit.deletePrimaryImage = function(fid) {
+			this.setFieldValue(fid, 0, null, null);
 			return true;
 		};
-		this.edit.deleteImage = function(fid) {
-			this.setFieldValue(fid, 0, null, null);
+		this.edit.addDropImage = function(iid) {
+			var rsp = M.api.getJSON('ciniki.info.contentImageAdd', 
+				{'business_id':M.curBusinessID, 'image_id':iid, 
+				'content_id':M.ciniki_info_volunteer.edit.content_id});
+			if( rsp.stat != 'ok' ) {
+				M.api.err(rsp);
+				return false;
+			}
+			return true;
+		};
+		this.edit.addDropImageRefresh = function() {
+			if( M.ciniki_info_volunteer.edit.content_id > 0 ) {
+				var rsp = M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID, 
+					'content_id':M.ciniki_info_volunteer.edit.content_id, 'images':'yes'}, function(rsp) {
+						if( rsp.stat != 'ok' ) {
+							M.api.err(rsp);
+							return false;
+						}
+						var p = M.ciniki_info_volunteer.edit;
+						p.data.images = rsp.content.images;
+						p.refreshSection('images');
+						p.show();
+					});
+			}
 			return true;
 		};
 		this.edit.sectionData = function(s) { 
@@ -54,6 +95,24 @@ function ciniki_info_volunteer() {
 		};
 		this.edit.rowFn = function(s, i, d) {
 			return 'M.ciniki_info_volunteer.showFileEdit(\'M.ciniki_info_volunteer.updateFiles();\',M.ciniki_info_volunteer.edit.content_id,\'' + d.file.id + '\');';
+		};
+		this.edit.thumbSrc = function(s, i, d) {
+			if( d.image.image_data != null && d.image.image_data != '' ) {
+				return d.image.image_data;
+			} else {
+				return '/ciniki-mods/core/ui/themes/default/img/noimage_75.jpg';
+			}
+		};
+		this.edit.thumbTitle = function(s, i, d) {
+			if( d.image.name != null ) { return d.image.name; }
+			return '';
+		};
+		this.edit.thumbID = function(s, i, d) {
+			if( d.image.id != null ) { return d.image.id; }
+			return 0;
+		};
+		this.edit.thumbFn = function(s, i, d) {
+			return 'M.startApp(\'ciniki.info.images\',null,\'M.ciniki_info_volunteer.edit.addDropImageRefresh();\',\'mc\',{\'content_id\':M.ciniki_info_volunteer.edit.content_id,\'content_image_id\':\'' + d.image.id + '\'});';
 		};
 		this.edit.addButton('save', 'Save', 'M.ciniki_info_volunteer.saveContent();');
 		this.edit.addClose('Cancel');
@@ -77,7 +136,7 @@ function ciniki_info_volunteer() {
 
 	this.showEdit = function(cb) {
 		M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
-			'content_type':this.content_type}, function(rsp) {
+			'content_type':this.content_type, 'images':'yes', 'files':'yes'}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
 					M.api.err(rsp);
 					return false;
@@ -105,4 +164,22 @@ function ciniki_info_volunteer() {
 			this.edit.close();
 		}
 	};
+
+	this.updateFiles = function() {
+		if( M.ciniki_info_volunteer.edit.content_id > 0 ) {
+			var rsp = M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID, 
+				'content_id':M.ciniki_info_volunteer.edit.content_id, 'files':'yes'}, function(rsp) {
+					if( rsp.stat != 'ok' ) {
+						M.api.err(rsp);
+						return false;
+					}
+					var p = M.ciniki_info_volunteer.edit;
+					p.data.files = rsp.content.files;
+					p.refreshSection('files');
+					p.show();
+				});
+		}
+		return true;
+	};
+
 }
