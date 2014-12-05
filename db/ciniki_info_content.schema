@@ -50,6 +50,8 @@
 # primary_image_caption: 	The caption for the image.
 # primary_image_url:	The URL for the image, if it should link somewhere
 #
+# child_title:		The title to use in lists when content is a child page.
+#
 # date_added:		The UTC date and time the record was added.
 # last_updated:		The UTC date and time the record was last updated.
 #
