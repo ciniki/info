@@ -32,6 +32,10 @@ function ciniki_info_main() {
 				'16':{'label':'Privacy Policy', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.privacypolicy\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'17':{'label':'Volunteer', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.volunteer\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'18':{'label':'Rental', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.rental\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'19':{'label':'Financial Assistance', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.financialassistance\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'20':{'label':'Artists', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.artists\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'21':{'label':'Employment', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.employment\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'22':{'label':'Staff', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.staff\',null,\'M.ciniki_info_main.showMenu();\');'},
 				}},
 			};
 		this.menu.listFn = function(s, i, d) { return d.fn; }

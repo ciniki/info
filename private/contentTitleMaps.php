@@ -31,6 +31,10 @@ function ciniki_info_contentTitleMaps($ciniki) {
 		'16'=>'Privacy Policy',
 		'17'=>'Volunteer',
 		'18'=>'Rental',
+		'19'=>'Financial Assistance',
+		'20'=>'Artists',
+		'21'=>'Employment',
+		'22'=>'Staff',
 		);
 	
 	return array('stat'=>'ok', 'maps'=>$maps);

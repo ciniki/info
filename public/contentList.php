@@ -136,6 +136,22 @@ function ciniki_info_contentList($ciniki) {
 		$content[] = array('content'=>array('id'=>'18', 
 			'title'=>((isset($titles['18']['title'])&&$titles['18']['title']!='')?$titles['18']['title']:'Rental')));
 	}
+	if( ($flags&0x040000) > 0 ) {
+		$content[] = array('content'=>array('id'=>'19', 
+			'title'=>((isset($titles['19']['title'])&&$titles['19']['title']!='')?$titles['19']['title']:'Financial Assistance')));
+	}
+	if( ($flags&0x080000) > 0 ) {
+		$content[] = array('content'=>array('id'=>'20', 
+			'title'=>((isset($titles['20']['title'])&&$titles['20']['title']!='')?$titles['20']['title']:'Artists')));
+	}
+	if( ($flags&0x100000) > 0 ) {
+		$content[] = array('content'=>array('id'=>'21', 
+			'title'=>((isset($titles['21']['title'])&&$titles['21']['title']!='')?$titles['21']['title']:'Employment')));
+	}
+	if( ($flags&0x200000) > 0 ) {
+		$content[] = array('content'=>array('id'=>'22', 
+			'title'=>((isset($titles['22']['title'])&&$titles['22']['title']!='')?$titles['22']['title']:'Staff')));
+	}
 
 	return array('stat'=>'ok', 'content'=>$content);
 }

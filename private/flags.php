@@ -35,8 +35,13 @@ function ciniki_info_flags($ciniki, $modules) {
 		// 0x010000
 		array('flag'=>array('bit'=>'17', 'name'=>'Volunteer')),
 		array('flag'=>array('bit'=>'18', 'name'=>'Rentals')),
-//		array('flag'=>array('bit'=>'19', 'name'=>'')),
-//		array('flag'=>array('bit'=>'20', 'name'=>'')),
+		array('flag'=>array('bit'=>'19', 'name'=>'Financial Assistance')),
+		array('flag'=>array('bit'=>'20', 'name'=>'Artists')),
+		// 0x100000
+		array('flag'=>array('bit'=>'21', 'name'=>'Employment')),
+		array('flag'=>array('bit'=>'22', 'name'=>'Staff')),
+//		array('flag'=>array('bit'=>'23', 'name'=>'Artists')),
+//		array('flag'=>array('bit'=>'24', 'name'=>'Artists')),
 		);
 
 	return array('stat'=>'ok', 'flags'=>$flags);
