@@ -35,6 +35,7 @@ function ciniki_info_contentTitleMaps($ciniki) {
 		'20'=>'Artists',
 		'21'=>'Employment',
 		'22'=>'Staff',
+		'23'=>'Sponsorship',
 		);
 	
 	return array('stat'=>'ok', 'maps'=>$maps);
