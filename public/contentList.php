@@ -148,6 +148,10 @@ function ciniki_info_contentList($ciniki) {
 		$content[] = array('content'=>array('id'=>'21', 
 			'title'=>((isset($titles['21']['title'])&&$titles['21']['title']!='')?$titles['21']['title']:'Employment')));
 	}
+	if( ($flags&0x800000) > 0 ) {
+		$content[] = array('content'=>array('id'=>'24', 
+			'title'=>((isset($titles['24']['title'])&&$titles['24']['title']!='')?$titles['24']['title']:'Jobs')));
+	}
 	if( ($flags&0x200000) > 0 ) {
 		$content[] = array('content'=>array('id'=>'22', 
 			'title'=>((isset($titles['22']['title'])&&$titles['22']['title']!='')?$titles['22']['title']:'Staff')));

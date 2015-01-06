@@ -17,7 +17,6 @@ function ciniki_info_web_pages($ciniki, $settings, $business_id) {
 		. "FROM ciniki_info_content "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND parent_id = 0 "
-		. "AND content <> '' "
 		. "";
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
 	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(

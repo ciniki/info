@@ -41,7 +41,7 @@ function ciniki_info_flags($ciniki, $modules) {
 		array('flag'=>array('bit'=>'21', 'name'=>'Employment')),
 		array('flag'=>array('bit'=>'22', 'name'=>'Staff')),
 		array('flag'=>array('bit'=>'23', 'name'=>'Sponsorship')),
-//		array('flag'=>array('bit'=>'24', 'name'=>'Artists')),
+		array('flag'=>array('bit'=>'24', 'name'=>'Jobs')),
 		);
 
 	return array('stat'=>'ok', 'flags'=>$flags);
