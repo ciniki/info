@@ -85,6 +85,14 @@ function ciniki_info_jobs() {
 			'_content':{'label':'Bio', 'fields':{
 				'content':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
 			}},
+			'files':{'label':'Files',
+				'type':'simplegrid', 'num_cols':1,
+				'headerValues':null,
+				'cellClasses':[''],
+				'addTxt':'Add File',
+				'addFn':'M.ciniki_info_jobs.editChildFile(0);',
+//				'addFn':'M.startApp(\'ciniki.info.contentfiles\',null,\'M.ciniki_info_jobs.updateChildFiles();\',\'mc\',{\'content_id\':M.ciniki_info_jobs.childedit.content_id});',
+			},
 			'_buttons':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_info_jobs.saveChildContent();'},
 				'delete':{'label':'Delete', 'fn':'M.ciniki_info_jobs.deleteChild();'},
@@ -108,6 +116,14 @@ function ciniki_info_jobs() {
 		this.childedit.fieldValue = function(s, i, j, d) {
 			return this.data[i];
 		};
+		this.childedit.cellValue = function(s, i, j, d) {
+			if( s == 'files' && j == 0 ) { return d.file.name; }
+		};
+		this.childedit.rowFn = function(s, i, d) {
+			if( s == 'files' ) {
+				return 'M.ciniki_info_jobs.editChildFile(\'' + d.file.id + '\');';
+			}
+		}
 		this.childedit.addButton('save', 'Save', 'M.ciniki_info_jobs.saveChildContent();');
 		this.childedit.addClose('Cancel');
 	}
@@ -178,7 +194,7 @@ function ciniki_info_jobs() {
 		if( cid != null ) { this.childedit.content_id = cid; }
 		if( this.childedit.content_id > 0 ) {
 			M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
-				'content_id':this.childedit.content_id}, function(rsp) {
+				'content_id':this.childedit.content_id, 'files':'yes'}, function(rsp) {
 					if( rsp.stat != 'ok' ) {
 						M.api.err(rsp);
 						return false;
@@ -223,6 +239,46 @@ function ciniki_info_jobs() {
 					M.ciniki_info_jobs.childedit.close();
 				});
 		}
+	};
+
+	this.editChildFile = function(fid) {
+		// 
+		// Check if child has been saved yet
+		//
+		if( this.childedit.content_id == 0 ) {
+			var c = this.childedit.serializeFormData('yes');
+			M.api.postJSONFormData('ciniki.info.contentAdd', 
+				{'business_id':M.curBusinessID, 'content_type':this.content_type,
+				'parent_id':this.childedit.parent_id}, c, function(rsp) {
+					if( rsp.stat != 'ok' ) {
+						M.api.err(rsp);
+						return false;
+					}
+					M.ciniki_info_jobs.childedit.content_id = rsp.id;
+					M.startApp('ciniki.info.contentfiles',null,'M.ciniki_info_jobs.updateChildFiles();','mc',{'content_id':this.childedit.content_id,'file_id':fid});
+				});
+		} else {
+			M.startApp('ciniki.info.contentfiles',null,'M.ciniki_info_jobs.updateChildFiles();','mc',{'content_id':this.childedit.content_id,'file_id':fid});
+		}
+	};
+
+	this.updateChildFiles = function() {
+		if( M.ciniki_info_jobs.childedit.content_id > 0 ) {
+			M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID, 
+				'content_id':M.ciniki_info_jobs.childedit.content_id, 'files':'yes'}, function(rsp) {
+					if( rsp.stat != 'ok' ) {
+						M.api.err(rsp);
+						return false;
+					}
+					var p = M.ciniki_info_jobs.childedit;
+					p.data.files = rsp.content.files;
+					p.refreshSection('files');
+					p.show();
+				});
+		} else {
+			M.ciniki_info_jobs.childedit.show();
+		}
+		return true;
 	};
 
 	this.deleteChild = function() {

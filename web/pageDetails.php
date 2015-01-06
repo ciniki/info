@@ -88,6 +88,35 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
 	}
 
 	//
+	// Check if any files are attached to the content
+	//
+	$strsql = "SELECT ciniki_info_content.id, "
+		. "ciniki_info_content_files.id AS file_id, "
+		. "ciniki_info_content_files.content_id, "
+		. "ciniki_info_content_files.name, "
+		. "ciniki_info_content_files.extension, "
+		. "ciniki_info_content_files.permalink, "
+		. "ciniki_info_content_files.description "
+		. "FROM ciniki_info_content, ciniki_info_content_files "
+		. "WHERE ciniki_info_content.parent_id = '" . ciniki_core_dbQuote($ciniki, $content['id']) . "' "
+		. "AND ciniki_info_content.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+		. "AND ciniki_info_content.id = ciniki_info_content_files.content_id "
+		. "AND ciniki_info_content_files.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+		. "";
+	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
+		array('container'=>'children', 'fname'=>'id', 
+			'fields'=>array('id')),
+		array('container'=>'files', 'fname'=>'file_id', 
+			'fields'=>array('id', 'name', 'extension', 'permalink', 'description')),
+		));
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	if( isset($rc['children']) ) {
+		$content['child_files'] = $rc['children'];
+	}
+
+	//
 	// Check if there are any children
 	//
 	$strsql = "SELECT id, title, "
@@ -127,6 +156,7 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
 		} else {
 			$content['child_categories'] = $rc['children'];
 		}
+
 	}
 
 	//
