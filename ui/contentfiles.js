@@ -166,6 +166,6 @@ function ciniki_info_contentfiles() {
 	};
 
 	this.downloadFile = function(fid) {
-		window.open(M.api.getUploadURL('ciniki.info.contentFileDownload', {'business_id':M.curBusinessID, 'file_id':fid}));
+		M.api.openFile('ciniki.info.contentFileDownload', {'business_id':M.curBusinessID, 'file_id':fid});
 	};
 }
