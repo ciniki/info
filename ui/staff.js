@@ -81,6 +81,7 @@ function ciniki_info_staff() {
 			}},
 			'_title':{'label':'', 'fields':{
 				'title':{'label':'Name', 'type':'text'},
+				'sequence':{'label':'Sequence', 'type':'text', 'size':'small'},
 			}},
 			'_content':{'label':'Bio', 'fields':{
 				'content':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
