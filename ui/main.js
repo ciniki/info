@@ -16,6 +16,7 @@ function ciniki_info_main() {
 			'content':{'label':'', 'list':{
 				'1':{'label':'About', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.about\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'2':{'label':'Artist Statement', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.artiststatement\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'25':{'label':'Extended Bio', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.extendedbio\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'3':{'label':'CV', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.cv\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'4':{'label':'Awards', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.awards\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'5':{'label':'History', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.history\',null,\'M.ciniki_info_main.showMenu();\');'},

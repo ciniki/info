@@ -72,6 +72,10 @@ function ciniki_info_contentList($ciniki) {
 		$content[] = array('content'=>array('id'=>'2', 
 			'title'=>((isset($titles['2']['title'])&&$titles['2']['title']!='')?$titles['2']['title']:'Artist Statement')));
 	}
+	if( ($flags&0x01000000) > 0 ) {
+		$content[] = array('content'=>array('id'=>'25', 
+			'title'=>((isset($titles['25']['title'])&&$titles['25']['title']!='')?$titles['25']['title']:'Extended Bio')));
+	}
 	if( ($flags&0x04) > 0 ) {
 		$content[] = array('content'=>array('id'=>'3', 
 			'title'=>((isset($titles['3']['title'])&&$titles['3']['title']!='')?$titles['3']['title']:'CV')));

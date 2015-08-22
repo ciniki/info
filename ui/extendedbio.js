@@ -1,15 +1,15 @@
 //
-// The info app to manage cv information
+// The info app to manage Extend Bio information
 //
-function ciniki_info_cv() {
-	this.content_type = 3;
+function ciniki_info_extendedbio() {
+	this.content_type = 25;
 	this.init = function() {
 		//
 		// The panel to display the add form
 		//
-		this.edit = new M.panel('CV',
-			'ciniki_info_cv', 'edit',
-			'mc', 'medium mediumaside', 'sectioned', 'ciniki.info.cv.edit');
+		this.edit = new M.panel('Extended Bio',
+			'ciniki_info_extendedbio', 'edit',
+			'mc', 'medium mediumaside', 'sectioned', 'ciniki.info.extendedbio.edit');
 		this.edit.data = {};	
 		this.edit.content_id = 0;
 		this.edit.sections = {
@@ -21,14 +21,11 @@ function ciniki_info_cv() {
 				'primary_image_caption':{'label':'Caption', 'type':'text'},
 //				'primary_image_url':{'label':'URL', 'type':'text'},
 			}},
-			'_title':{'label':'', 'fields':{
-				'title':{'label':'Title', 'type':'text', 'hint':'CV'},
-			}},
-			'_content':{'label':'CV', 'fields':{
+			'_content':{'label':'Extended Bio', 'fields':{
 				'content':{'label':'', 'type':'textarea', 'size':'large', 'hidelabel':'yes'},
 			}},
 			'_buttons':{'label':'', 'buttons':{
-				'save':{'label':'Save', 'fn':'M.ciniki_info_cv.saveContent();'},
+				'save':{'label':'Save', 'fn':'M.ciniki_info_extendedbio.saveContent();'},
 			}},
 		};
 		this.edit.fieldHistoryArgs = function(s, i) {
@@ -36,7 +33,7 @@ function ciniki_info_cv() {
 				'content_id':this.content_id, 'field':i}};
 		};
 		this.edit.addDropImage = function(iid) {
-			M.ciniki_info_cv.edit.setFieldValue('primary_image_id', iid, null, null);
+			M.ciniki_info_extendedbio.edit.setFieldValue('primary_image_id', iid, null, null);
 			return true;
 		};
 		this.edit.deleteImage = function(fid) {
@@ -53,9 +50,9 @@ function ciniki_info_cv() {
 			if( j == 0 ) { return d.file.name; }
 		};
 		this.edit.rowFn = function(s, i, d) {
-			return 'M.ciniki_info_cv.showFileEdit(\'M.ciniki_info_cv.updateFiles();\',M.ciniki_info_cv.edit.content_id,\'' + d.file.id + '\');';
+			return 'M.ciniki_info_extendedbio.showFileEdit(\'M.ciniki_info_extendedbio.updateFiles();\',M.ciniki_info_extendedbio.edit.content_id,\'' + d.file.id + '\');';
 		};
-		this.edit.addButton('save', 'Save', 'M.ciniki_info_cv.saveContent();');
+		this.edit.addButton('save', 'Save', 'M.ciniki_info_extendedbio.saveContent();');
 		this.edit.addClose('Cancel');
 	}
 
@@ -66,7 +63,7 @@ function ciniki_info_cv() {
 		//
 		// Create container
 		//
-		var appContainer = M.createContainer(appPrefix, 'ciniki_info_cv', 'yes');
+		var appContainer = M.createContainer(appPrefix, 'ciniki_info_extendedbio', 'yes');
 		if( appContainer == null ) {
 			alert('App Error');
 			return false;
@@ -82,7 +79,7 @@ function ciniki_info_cv() {
 					M.api.err(rsp);
 					return false;
 				}
-				var p = M.ciniki_info_cv.edit;
+				var p = M.ciniki_info_extendedbio.edit;
 				p.data = rsp.content;
 				p.content_id = rsp.content.id;
 				p.refresh();
@@ -99,7 +96,7 @@ function ciniki_info_cv() {
 						M.api.err(rsp);
 						return false;
 					}
-					M.ciniki_info_cv.edit.close();
+					M.ciniki_info_extendedbio.edit.close();
 				});
 		} else {
 			this.edit.close();
