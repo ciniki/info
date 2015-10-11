@@ -39,6 +39,7 @@ function ciniki_info_main() {
 				'22':{'label':'Staff', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.staff\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'23':{'label':'Sponsorship', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.sponsorship\',null,\'M.ciniki_info_main.showMenu();\');'},
 				'24':{'label':'Jobs', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.jobs\',null,\'M.ciniki_info_main.showMenu();\');'},
+				'26':{'label':'Subscription Agreement', 'visible':'no', 'fn':'M.startApp(\'ciniki.info.subscriptionagreement\',null,\'M.ciniki_info_main.showMenu();\');'},
 				}},
 			};
 		this.menu.listFn = function(s, i, d) { return d.fn; }

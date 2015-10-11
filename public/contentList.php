@@ -164,6 +164,10 @@ function ciniki_info_contentList($ciniki) {
 		$content[] = array('content'=>array('id'=>'23', 
 			'title'=>((isset($titles['23']['title'])&&$titles['23']['title']!='')?$titles['23']['title']:'Sponsorship')));
 	}
+	if( ($flags&0x02000000) > 0 ) {
+		$content[] = array('content'=>array('id'=>'26', 
+			'title'=>((isset($titles['26']['title'])&&$titles['26']['title']!='')?$titles['26']['title']:'Subscription Agreement')));
+	}
 
 	return array('stat'=>'ok', 'content'=>$content);
 }
