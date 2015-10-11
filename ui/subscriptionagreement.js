@@ -9,7 +9,7 @@ function ciniki_info_subscriptionagreement() {
 		//
 		this.edit = new M.panel('Subscription Agreement',
 			'ciniki_info_subscriptionagreement', 'edit',
-			'mc', 'medium mediumaside', 'sectioned', 'ciniki.info.subscriptionagreement.edit');
+			'mc', 'medium', 'sectioned', 'ciniki.info.subscriptionagreement.edit');
 		this.edit.data = {};	
 		this.edit.content_id = 0;
 		this.edit.sections = {
