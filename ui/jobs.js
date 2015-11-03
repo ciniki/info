@@ -13,7 +13,7 @@ function ciniki_info_jobs() {
 		this.edit.data = {};	
 		this.edit.content_id = 0;
 		this.edit.sections = {
-			'_image':{'label':'', 'aside':'yes', 'fields':{
+			'_image':{'label':'', 'aside':'yes', 'type':'imageform', 'fields':{
 				'primary_image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 
 					'controls':'all', 'history':'no'},
 			}},
@@ -71,7 +71,7 @@ function ciniki_info_jobs() {
 		this.childedit.parent_id = 0;
 		this.childedit.content_id = 0;
 		this.childedit.sections = {
-			'_image':{'label':'', 'aside':'yes', 'fields':{
+			'_image':{'label':'', 'aside':'yes', 'type':'imageform', 'fields':{
 				'primary_image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 
 					'controls':'all', 'history':'no'},
 			}},
