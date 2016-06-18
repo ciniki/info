@@ -6,14 +6,14 @@
 #
 # Fields
 # ------
-# id:                The ID assigned to the content.
-# uuid:                The Universal Unique ID.
-# business_id:        The business the content is attached to.
+# id:               The ID assigned to the content.
+# uuid:             The Universal Unique ID.
+# business_id:      The business the content is attached to.
 #
 # parent_id:        The ID of the parent for nested content.
 #
-# content_type:        The content type, which matches the bit number from
-#                    the module flags for the ciniki.info module.
+# content_type:     The content type, which matches the bit number from
+#                   the module flags for the ciniki.info module.
 #
 #                    0 - unknown
 #                    1 - About
@@ -46,24 +46,24 @@
 # title:            The title for the page/section.
 # permalink:        The permalink for the page.
 #
-# category:            This is used for child content to display lists in 
-#                    categories.
+# category:         This is used for child content to display lists in 
+#                   categories.
 #
 # sequence:         The display order for nested content.
 #
-# excerpt:            The short description for use in lists.  If not 
-#                    there the full description will be used.
+# excerpt:          The short description for use in lists.  If not 
+#                   there the full description will be used.
 #
-# content:            The full text content of the page/section.
+# content:          The full text content of the page/section.
 #
-# primary_image_id:    The ID of the main image for the page/section
-# primary_image_caption:     The caption for the image.
-# primary_image_url:    The URL for the image, if it should link somewhere
+# primary_image_id:         The ID of the main image for the page/section
+# primary_image_caption:    The caption for the image.
+# primary_image_url:        The URL for the image, if it should link somewhere
 #
-# child_title:        The title to use in lists when content is a child page.
+# child_title:              The title to use in lists when content is a child page.
 #
-# date_added:        The UTC date and time the record was added.
-# last_updated:        The UTC date and time the record was last updated.
+# date_added:       The UTC date and time the record was added.
+# last_updated:     The UTC date and time the record was last updated.
 #
 create table ciniki_info_content (
     id int not null auto_increment,
