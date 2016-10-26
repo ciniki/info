@@ -39,6 +39,8 @@ function ciniki_info_contentTitleMaps($ciniki) {
         '24'=>'Jobs',
         '25'=>'Extended Bio',
         '26'=>'Subscription Agreement',
+        '27'=>'Committees',
+        '28'=>'Bylaws',
         );
     
     return array('stat'=>'ok', 'maps'=>$maps);

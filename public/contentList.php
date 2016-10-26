@@ -168,6 +168,14 @@ function ciniki_info_contentList($ciniki) {
         $content[] = array('content'=>array('id'=>'26', 
             'title'=>((isset($titles['26']['title'])&&$titles['26']['title']!='')?$titles['26']['title']:'Subscription Agreement')));
     }
+    if( ($flags&0x04000000) > 0 ) {
+        $content[] = array('content'=>array('id'=>'27', 
+            'title'=>((isset($titles['27']['title'])&&$titles['27']['title']!='')?$titles['27']['title']:'Committees')));
+    }
+    if( ($flags&0x08000000) > 0 ) {
+        $content[] = array('content'=>array('id'=>'28', 
+            'title'=>((isset($titles['28']['title'])&&$titles['28']['title']!='')?$titles['28']['title']:'Bylaws')));
+    }
 
     return array('stat'=>'ok', 'content'=>$content);
 }
