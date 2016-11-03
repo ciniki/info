@@ -62,7 +62,7 @@ function ciniki_info_contentUpdate(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['item']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1674', 'msg'=>'Content not found'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.info.27', 'msg'=>'Content not found'));
     }
     $item = $rc['item'];
 
@@ -90,7 +90,7 @@ function ciniki_info_contentUpdate(&$ciniki) {
             return $rc;
         }
         if( $rc['num_rows'] > 0 ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1675', 'msg'=>'You already have content with this title, please choose another title.'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.info.28', 'msg'=>'You already have content with this title, please choose another title.'));
         }
     }
 

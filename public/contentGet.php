@@ -73,7 +73,7 @@ function ciniki_info_contentGet($ciniki) {
         $strsql .= "AND ciniki_info_content.content_type = '" . ciniki_core_dbQuote($ciniki, $args['content_type']) . "' ";
         $strsql .= "AND ciniki_info_content.parent_id = 0 ";
     } else {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1677', 'msg'=>'You must specify the content you want.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.info.18', 'msg'=>'You must specify the content you want.'));
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');
@@ -142,7 +142,7 @@ function ciniki_info_contentGet($ciniki) {
             //
             // Return error if requested specific content and doesn't exist
             //
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1676', 'msg'=>'Unable to find content'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.info.19', 'msg'=>'Unable to find content'));
         }
     }
     $content = $rc['content'][0]['content'];

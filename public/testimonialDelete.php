@@ -46,7 +46,7 @@ function ciniki_info_testimonialDelete(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['item']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1771', 'msg'=>'Testimonial does not exist'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.info.29', 'msg'=>'Testimonial does not exist'));
     }
     $item = $rc['item'];
 

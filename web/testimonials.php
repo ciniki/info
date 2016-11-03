@@ -29,7 +29,7 @@ function ciniki_info_web_testimonials($ciniki, $settings, $business_id) {
         return $rc;
     }
     if( !isset($rc['testimonials']) || count($rc['testimonials']) < 1 ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1775', 'msg'=>"I'm sorry, but we can't find the page you requested."));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.info.35', 'msg'=>"I'm sorry, but we can't find the page you requested."));
     }
     $testimonials = $rc['testimonials'];
 

@@ -67,7 +67,7 @@ function ciniki_info_testimonialGet($ciniki) {
         return $rc;
     }
     if( !isset($rc['testimonials']) ) {
-        return array('stat'=>'ok', 'err'=>array('pkg'=>'ciniki', 'code'=>'1773', 'msg'=>'Unable to find testimonial'));
+        return array('stat'=>'ok', 'err'=>array('code'=>'ciniki.info.30', 'msg'=>'Unable to find testimonial'));
     }
     $testimonial = $rc['testimonials'][0]['testimonial'];
     

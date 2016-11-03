@@ -46,7 +46,7 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
     } elseif( isset($args['content_type']) && $args['content_type'] != '' && $args['content_type'] != '0' ) {
         $strsql .= "AND ciniki_info_content.content_type = '" . ciniki_core_dbQuote($ciniki, $args['content_type']) . "' ";
     } else {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1679', 'msg'=>'I\'m sorry, we were unable to find the page you requested.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.info.33', 'msg'=>'I\'m sorry, we were unable to find the page you requested.'));
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
@@ -64,7 +64,7 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
         return $rc;
     }
     if( !isset($rc['content']) || count($rc['content']) < 1 ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1680', 'msg'=>"I'm sorry, but we can't find the page you requested."));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.info.34', 'msg'=>"I'm sorry, but we can't find the page you requested."));
     }
     $content = array_pop($rc['content']);
 

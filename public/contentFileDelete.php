@@ -51,7 +51,7 @@ function ciniki_info_contentFileDelete(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['file']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1665', 'msg'=>'Unable to find existing item'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.info.12', 'msg'=>'Unable to find existing item'));
     }
     $uuid = $rc['file']['uuid'];
 

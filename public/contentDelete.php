@@ -51,7 +51,7 @@ function ciniki_info_contentDelete(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['item']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1678', 'msg'=>'The content does not exist'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.info.7', 'msg'=>'The content does not exist'));
     }
     $item = $rc['item'];
 
