@@ -14,8 +14,7 @@ function ciniki_info_sponsorship() {
         this.edit.content_id = 0;
         this.edit.sections = {
             '_image':{'label':'', 'aside':'yes', 'type':'imageform', 'fields':{
-                'primary_image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 
-                    'controls':'all', 'sponsorship':'no'},
+                'primary_image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 'controls':'all', 'sponsorship':'no', 'history':'no'},
             }},
             '_image_caption':{'label':'', 'aside':'yes', 'fields':{
                 'primary_image_caption':{'label':'Caption', 'type':'text'},
@@ -24,6 +23,13 @@ function ciniki_info_sponsorship() {
             '_content':{'label':'Sponsorship', 'fields':{
                 'content':{'label':'', 'type':'textarea', 'size':'large', 'hidelabel':'yes'},
             }},
+            'files':{'label':'Files',
+                'type':'simplegrid', 'num_cols':1,
+                'headerValues':null,
+                'cellClasses':[''],
+                'addTxt':'Add File',
+                'addFn':'M.ciniki_info_sponsorship.showFileEdit(\'M.ciniki_info_sponsorship.updateFiles();\',M.ciniki_info_sponsorship.edit.content_id,0);',
+                },
             '_buttons':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_info_sponsorship.saveContent();'},
             }},
@@ -54,6 +60,68 @@ function ciniki_info_sponsorship() {
         };
         this.edit.addButton('save', 'Save', 'M.ciniki_info_sponsorship.saveContent();');
         this.edit.addClose('Cancel');
+
+        //
+        // The panel to display the add form
+        //
+        this.addfile = new M.panel('Add File',
+            'ciniki_info_sponsorship', 'addfile',
+            'mc', 'medium', 'sectioned', 'ciniki.info.sponsorship.editfile');
+        this.addfile.default_data = {};
+        this.addfile.data = {}; 
+        this.addfile.sections = {
+            '_file':{'label':'File', 'fields':{
+                'uploadfile':{'label':'', 'type':'file', 'hidelabel':'yes'},
+            }},
+            'info':{'label':'Information', 'type':'simpleform', 'fields':{
+                'name':{'label':'Title', 'type':'text'},
+            }},
+//          '_description':{'label':'Description', 'type':'simpleform', 'fields':{
+//              'description':{'label':'', 'type':'textarea', 'size':'small', 'hidelabel':'yes'},
+//          }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_info_sponsorship.addFile();'},
+            }},
+        };
+        this.addfile.fieldValue = function(s, i, d) { 
+            if( this.data[i] != null ) {
+                return this.data[i]; 
+            } 
+            return ''; 
+        };
+        this.addfile.addButton('save', 'Save', 'M.ciniki_info_sponsorship.addFile();');
+        this.addfile.addClose('Cancel');
+
+        //
+        // The panel to display the edit form
+        //
+        this.editfile = new M.panel('File',
+            'ciniki_info_sponsorship', 'editfile',
+            'mc', 'medium', 'sectioned', 'ciniki.info.sponsorship.editfile');
+        this.editfile.file_id = 0;
+        this.editfile.data = null;
+        this.editfile.sections = {
+            'info':{'label':'Details', 'type':'simpleform', 'fields':{
+                'name':{'label':'Title', 'type':'text'},
+            }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_info_sponsorship.saveFile();'},
+                'download':{'label':'Download', 'fn':'M.ciniki_info_sponsorship.downloadFile(M.ciniki_info_sponsorship.editfile.file_id);'},
+                'delete':{'label':'Delete', 'fn':'M.ciniki_info_sponsorship.deleteFile();'},
+            }},
+        };
+        this.editfile.fieldValue = function(s, i, d) { 
+            return this.data[i]; 
+        }
+        this.editfile.sectionData = function(s) {
+            return this.data[s];
+        };
+        this.editfile.fieldHistoryArgs = function(s, i) {
+            return {'method':'ciniki.info.contentFileHistory', 'args':{'business_id':M.curBusinessID, 
+                'file_id':this.file_id, 'field':i}};
+        };
+        this.editfile.addButton('save', 'Save', 'M.ciniki_info_sponsorship.saveFile();');
+        this.editfile.addClose('Cancel');
     }
 
     this.start = function(cb, appPrefix, aG) {
@@ -101,5 +169,92 @@ function ciniki_info_sponsorship() {
         } else {
             this.edit.close();
         }
+    };
+
+    this.showFileEdit = function(cb,cid,fid) {
+        if( cid != null ) { this.editfile.content_id = cid; this.addfile.content_id = cid; }
+        if( fid != null && fid > 0 ) {
+            this.editfile.file_id = fid;
+            var rsp = M.api.getJSONCb('ciniki.info.contentFileGet', 
+                {'business_id':M.curBusinessID, 'file_id':this.editfile.file_id}, function(rsp) {
+                    if( rsp.stat != 'ok' ) {
+                        M.api.err(rsp);
+                        return false;
+                    }
+                    var p = M.ciniki_info_sponsorship.editfile;
+                    p.data = rsp.file;
+                    p.refresh();
+                    p.show(cb);
+                });
+
+        } else {
+            this.addfile.reset();
+            this.addfile.data = {};
+            this.addfile.refresh();
+            this.addfile.show(cb);
+        }
+    };
+
+    this.updateFiles = function() {
+        M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+            'content_id':M.ciniki_info_sponsorship.editfile.content_id, 'files':'yes'}, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                }
+                var p = M.ciniki_info_sponsorship.edit;
+                p.data.files = rsp.content.files;
+                p.refreshSection('files');
+                p.show();
+            });
+    };
+
+    this.addFile = function() {
+        var c = this.addfile.serializeFormData('yes');
+
+        M.api.postJSONFormData('ciniki.info.contentFileAdd', 
+            {'business_id':M.curBusinessID, 
+            'content_id':M.ciniki_info_sponsorship.addfile.content_id}, c, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                } 
+                M.ciniki_info_sponsorship.addfile.close();
+            });
+    };
+
+    this.saveFile = function() {
+        var c = this.editfile.serializeFormData('no');
+
+        if( c != '' ) {
+            M.api.postJSONFormData('ciniki.info.contentFileUpdate', 
+                {'business_id':M.curBusinessID, 'file_id':this.editfile.file_id}, c,
+                    function(rsp) {
+                        if( rsp.stat != 'ok' ) {
+                            M.api.err(rsp);
+                            return false;
+                        } 
+                        M.ciniki_info_sponsorship.editfile.close();
+                    });
+        } else {
+            this.editfile.close();
+        }
+    };
+
+    this.deleteFile = function() {
+        if( confirm('Are you sure you want to delete \'' + this.editfile.data.name + '\'?  All information about the file will be removed and unrecoverable.') ) {
+            M.api.getJSONCb('ciniki.info.contentFileDelete', {'business_id':M.curBusinessID, 
+                'file_id':this.editfile.file_id}, function(rsp) {
+                    if( rsp.stat != 'ok' ) {
+                        M.api.err(rsp);
+                        return false;
+                    } 
+                    M.ciniki_info_sponsorship.editfile.close();
+                });
+        }
+    };
+
+    this.downloadFile = function(fid) {
+        M.api.openFile('ciniki.info.contentFileDownload', {'business_id':M.curBusinessID, 'file_id':fid});
     };
 }
