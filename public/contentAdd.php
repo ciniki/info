@@ -91,9 +91,9 @@ function ciniki_info_contentAdd(&$ciniki) {
     //
     if( !isset($args['sequence']) || $args['sequence'] == '' || $args['sequence'] == '0' ) {
         $strsql = "SELECT MAX(sequence) AS max_sequence "
-            . "FROM ciniki_info_content_images "
+            . "FROM ciniki_info_content "
             . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
-            . "AND content_id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
+            . "AND content_type = '" . ciniki_core_dbQuote($ciniki, $args['content_type']) . "' "
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.info', 'seq');
         if( $rc['stat'] != 'ok' ) { 
