@@ -7,7 +7,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business to update the testimonial for.
+// tnid:         The ID of the tenant to update the testimonial for.
 //
 // Returns
 // -------
@@ -19,7 +19,7 @@ function ciniki_info_testimonialUpdate(&$ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'testimonial_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Testimonial ID'), 
         'sequence'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Sequence'),
         'quote'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Quote'), 
@@ -37,10 +37,10 @@ function ciniki_info_testimonialUpdate(&$ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'private', 'checkAccess');
-    $rc = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.testimonialUpdate'); 
+    $rc = ciniki_info_checkAccess($ciniki, $args['tnid'], 'ciniki.info.testimonialUpdate'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
@@ -50,7 +50,7 @@ function ciniki_info_testimonialUpdate(&$ciniki) {
     //
     $strsql = "SELECT id, sequence, uuid "
         . "FROM ciniki_info_testimonials "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND id = '" . ciniki_core_dbQuote($ciniki, $args['testimonial_id']) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.info', 'item');
@@ -66,6 +66,6 @@ function ciniki_info_testimonialUpdate(&$ciniki) {
     // Update the testimonial in the database
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectUpdate');
-    return ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.info.testimonial', $args['testimonial_id'], $args);
+    return ciniki_core_objectUpdate($ciniki, $args['tnid'], 'ciniki.info.testimonial', $args['testimonial_id'], $args);
 }
 ?>

@@ -29,7 +29,7 @@ function ciniki_info_financialassistance() {
             }},
         };
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.info.contentHistory', 'args':{'business_id':M.curBusinessID,
+            return {'method':'ciniki.info.contentHistory', 'args':{'tnid':M.curTenantID,
                 'content_id':this.content_id, 'field':i}};
         };
         this.edit.addDropImage = function(iid) {
@@ -73,7 +73,7 @@ function ciniki_info_financialassistance() {
     }
 
     this.showEdit = function(cb) {
-        M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+        M.api.getJSONCb('ciniki.info.contentGet', {'tnid':M.curTenantID,
             'content_type':this.content_type}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -91,7 +91,7 @@ function ciniki_info_financialassistance() {
         var c = this.edit.serializeFormData('no');
         if( c != null ) {
             M.api.postJSONFormData('ciniki.info.contentUpdate', 
-                {'business_id':M.curBusinessID, 'content_id':this.edit.content_id}, c, function(rsp) {
+                {'tnid':M.curTenantID, 'content_id':this.edit.content_id}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;

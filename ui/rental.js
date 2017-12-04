@@ -59,7 +59,7 @@ function ciniki_info_rental() {
             }},
         };
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.info.contentHistory', 'args':{'business_id':M.curBusinessID,
+            return {'method':'ciniki.info.contentHistory', 'args':{'tnid':M.curTenantID,
                 'content_id':this.content_id, 'field':i}};
         };
         this.edit.deletePrimaryImage = function(fid) {
@@ -68,7 +68,7 @@ function ciniki_info_rental() {
         };
         this.edit.addDropImage = function(iid) {
             var rsp = M.api.getJSON('ciniki.info.contentImageAdd', 
-                {'business_id':M.curBusinessID, 'image_id':iid, 
+                {'tnid':M.curTenantID, 'image_id':iid, 
                 'content_id':M.ciniki_info_rental.edit.content_id});
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
@@ -78,7 +78,7 @@ function ciniki_info_rental() {
         };
         this.edit.addDropImageRefresh = function() {
             if( M.ciniki_info_rental.edit.content_id > 0 ) {
-                var rsp = M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID, 
+                var rsp = M.api.getJSONCb('ciniki.info.contentGet', {'tnid':M.curTenantID, 
                     'content_id':M.ciniki_info_rental.edit.content_id, 'images':'yes'}, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
@@ -147,7 +147,7 @@ function ciniki_info_rental() {
             }},
         };
         this.childedit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.info.contentHistory', 'args':{'business_id':M.curBusinessID,
+            return {'method':'ciniki.info.contentHistory', 'args':{'tnid':M.curTenantID,
                 'content_id':this.content_id, 'field':i}};
         };
         this.childedit.addDropImage = function(iid) {
@@ -185,7 +185,7 @@ function ciniki_info_rental() {
     }
 
     this.showEdit = function(cb) {
-        M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+        M.api.getJSONCb('ciniki.info.contentGet', {'tnid':M.curTenantID,
             'content_type':this.content_type, 'images':'yes', 'files':'yes', 'children':'list'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -203,7 +203,7 @@ function ciniki_info_rental() {
         var c = this.edit.serializeFormData('no');
         if( c != null ) {
             M.api.postJSONFormData('ciniki.info.contentUpdate', 
-                {'business_id':M.curBusinessID, 'content_id':this.edit.content_id}, c, function(rsp) {
+                {'tnid':M.curTenantID, 'content_id':this.edit.content_id}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -217,7 +217,7 @@ function ciniki_info_rental() {
 
     this.updateFiles = function() {
         if( M.ciniki_info_rental.edit.content_id > 0 ) {
-            var rsp = M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.info.contentGet', {'tnid':M.curTenantID, 
                 'content_id':M.ciniki_info_rental.edit.content_id, 'files':'yes'}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -233,7 +233,7 @@ function ciniki_info_rental() {
     };
 
     this.updateChildren = function() {
-        M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+        M.api.getJSONCb('ciniki.info.contentGet', {'tnid':M.curTenantID,
             'content_id':M.ciniki_info_rental.edit.content_id, 'children':'list'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -250,7 +250,7 @@ function ciniki_info_rental() {
         if( pid != null ) { this.childedit.parent_id = pid; }
         if( cid != null ) { this.childedit.content_id = cid; }
         if( this.childedit.content_id > 0 ) {
-            M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+            M.api.getJSONCb('ciniki.info.contentGet', {'tnid':M.curTenantID,
                 'content_id':this.childedit.content_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -274,7 +274,7 @@ function ciniki_info_rental() {
             var c = this.childedit.serializeFormData('no');
             if( c != null ) {
                 M.api.postJSONFormData('ciniki.info.contentUpdate', 
-                    {'business_id':M.curBusinessID, 'content_id':this.childedit.content_id}, c, function(rsp) {
+                    {'tnid':M.curTenantID, 'content_id':this.childedit.content_id}, c, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
                             return false;
@@ -287,7 +287,7 @@ function ciniki_info_rental() {
         } else {
             var c = this.childedit.serializeFormData('yes');
             M.api.postJSONFormData('ciniki.info.contentAdd', 
-                {'business_id':M.curBusinessID, 'content_type':this.content_type,
+                {'tnid':M.curTenantID, 'content_type':this.content_type,
                 'parent_id':this.childedit.parent_id}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -300,7 +300,7 @@ function ciniki_info_rental() {
 
     this.deleteChild = function() {
         if( confirm('Are you sure you want to delete this supplier?') ) {
-            var rsp = M.api.getJSONCb('ciniki.info.contentDelete', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.info.contentDelete', {'tnid':M.curTenantID, 
                 'content_id':this.childedit.content_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);

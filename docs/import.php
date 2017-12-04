@@ -60,62 +60,62 @@ function ciniki_info_import($ciniki) {
 
 
     //
-    // Enable the module with basic About page for every business
+    // Enable the module with basic About page for every tenant
     //
     $strsql = "SELECT id "
-        . "FROM ciniki_businesses "
+        . "FROM ciniki_tenants "
         . "";
-    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'tenant');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    $businesses = $rc['rows'];
-    foreach($businesses as $business) {
-        $business_id = $business['id'];
-        $strsql = "INSERT INTO ciniki_business_modules (business_id, package, module, "
+    $tenants = $rc['rows'];
+    foreach($tenants as $tenant) {
+        $tnid = $tenant['id'];
+        $strsql = "INSERT INTO ciniki_tenant_modules (tnid, package, module, "
             . "status, flags, ruleset, date_added, last_updated, last_change) VALUES ("
-            . "$business_id, 'ciniki', 'info', "
+            . "$tnid, 'ciniki', 'info', "
             . "1, 1, '', UTC_TIMESTAMP(), UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-        $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
+        $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.tenants');
     }
 
     //
-    // Get the list of about pages, by business
+    // Get the list of about pages, by tenant
     //
-    $strsql = "SELECT business_id, detail_key, detail_value "
+    $strsql = "SELECT tnid, detail_key, detail_value "
         . "FROM ciniki_web_settings "
         . "WHERE detail_key LIKE 'page-about%' "
-        . "ORDER BY business_id "
+        . "ORDER BY tnid "
         . "";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
-        array('container'=>'businesses', 'fname'=>'business_id',
-            'fields'=>array('id'=>'business_id')),
+        array('container'=>'tenants', 'fname'=>'tnid',
+            'fields'=>array('id'=>'tnid')),
         array('container'=>'settings', 'fname'=>'detail_key',
             'fields'=>array('value'=>'detail_value')),
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    $web_settings = $rc['businesses'];
+    $web_settings = $rc['tenants'];
 
     //
-    // Get the list of about content by business
+    // Get the list of about content by tenant
     //
-    $strsql = "SELECT business_id, detail_key, detail_value "
+    $strsql = "SELECT tnid, detail_key, detail_value "
         . "FROM ciniki_web_content "
         . "WHERE detail_key LIKE 'page-about%' "
-        . "ORDER BY business_id "
+        . "ORDER BY tnid "
         . "";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
-        array('container'=>'businesses', 'fname'=>'business_id',
-            'fields'=>array('id'=>'business_id')),
+        array('container'=>'tenants', 'fname'=>'tnid',
+            'fields'=>array('id'=>'tnid')),
         array('container'=>'settings', 'fname'=>'detail_key',
             'fields'=>array('value'=>'detail_value')),
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    $web_content = $rc['businesses'];
+    $web_content = $rc['tenants'];
 
     //
     // Go through web settings and setup about information
@@ -130,7 +130,7 @@ function ciniki_info_import($ciniki) {
         '7'=>array('title'=>'Membership', 'permalink'=>'membership', 'name'=>'aboutmembership'),
         '8'=>array('title'=>'Board of Directors', 'permalink'=>'boardofdirectors', 'name'=>'aboutboardofdirectors'),
         );
-    foreach($web_settings as $business_id => $business) {
+    foreach($web_settings as $tnid => $tenant) {
         //
         // Setup about page
         //
@@ -148,23 +148,23 @@ function ciniki_info_import($ciniki) {
                 'content'=>'',
             );
             $pname = $page['name'];
-            if( isset($business['settings']["page-$pname-image"]['value']) 
-                && $business['settings']["page-$pname-image"]['value'] != '' ) {
-                $args['primary_image_id'] = $business['settings']["page-$pname-image"]['value'];
+            if( isset($tenant['settings']["page-$pname-image"]['value']) 
+                && $tenant['settings']["page-$pname-image"]['value'] != '' ) {
+                $args['primary_image_id'] = $tenant['settings']["page-$pname-image"]['value'];
             }
-            if( isset($business['settings']["page-$pname-image-caption"]['value']) ) {
-                $args['primary_image_caption'] = $business['settings']["page-$pname-image-caption"]['value'];
+            if( isset($tenant['settings']["page-$pname-image-caption"]['value']) ) {
+                $args['primary_image_caption'] = $tenant['settings']["page-$pname-image-caption"]['value'];
             }
-            if( isset($business['settings']["page-$pname-image-url"]['value']) ) {
-                $args['primary_image_url'] = $business['settings']["page-$pname-image-url"]['value'];
+            if( isset($tenant['settings']["page-$pname-image-url"]['value']) ) {
+                $args['primary_image_url'] = $tenant['settings']["page-$pname-image-url"]['value'];
             }
-            if( isset($web_content[$business_id]['settings']["page-$pname-content"]['value']) ) {
-                $args['content'] = $web_content[$business_id]['settings']["page-$pname-content"]['value'];
+            if( isset($web_content[$tnid]['settings']["page-$pname-content"]['value']) ) {
+                $args['content'] = $web_content[$tnid]['settings']["page-$pname-content"]['value'];
             }
             if( $content_type == 1 || $args['content'] != '' || $args['primary_image_id'] != 0 
-                || (isset($business['settings']["page-$pname-active"]['value']) 
-                    && $business['settings']["page-$pname-active"]['value'] == 'yes') ) {
-                $rc = ciniki_core_objectAdd($ciniki, $business_id, 'ciniki.info.content', $args, 0x03);
+                || (isset($tenant['settings']["page-$pname-active"]['value']) 
+                    && $tenant['settings']["page-$pname-active"]['value'] == 'yes') ) {
+                $rc = ciniki_core_objectAdd($ciniki, $tnid, 'ciniki.info.content', $args, 0x03);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }

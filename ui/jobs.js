@@ -33,7 +33,7 @@ function ciniki_info_jobs() {
             }},
         };
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.info.contentHistory', 'args':{'business_id':M.curBusinessID,
+            return {'method':'ciniki.info.contentHistory', 'args':{'tnid':M.curTenantID,
                 'content_id':this.content_id, 'field':i}};
         };
         this.edit.addDropImage = function(iid) {
@@ -99,7 +99,7 @@ function ciniki_info_jobs() {
             }},
         };
         this.childedit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.info.contentHistory', 'args':{'business_id':M.curBusinessID,
+            return {'method':'ciniki.info.contentHistory', 'args':{'tnid':M.curTenantID,
                 'content_id':this.content_id, 'field':i}};
         };
         this.childedit.addDropImage = function(iid) {
@@ -145,7 +145,7 @@ function ciniki_info_jobs() {
     }
 
     this.showEdit = function(cb) {
-        M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+        M.api.getJSONCb('ciniki.info.contentGet', {'tnid':M.curTenantID,
             'content_type':this.content_type, 'children':'list'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -163,7 +163,7 @@ function ciniki_info_jobs() {
         var c = this.edit.serializeFormData('no');
         if( c != null ) {
             M.api.postJSONFormData('ciniki.info.contentUpdate', 
-                {'business_id':M.curBusinessID, 'content_id':this.edit.content_id}, c, function(rsp) {
+                {'tnid':M.curTenantID, 'content_id':this.edit.content_id}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -176,7 +176,7 @@ function ciniki_info_jobs() {
     };
 
     this.updateChildren = function() {
-        M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+        M.api.getJSONCb('ciniki.info.contentGet', {'tnid':M.curTenantID,
             'content_id':M.ciniki_info_jobs.edit.content_id, 'children':'list'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -193,7 +193,7 @@ function ciniki_info_jobs() {
         if( pid != null ) { this.childedit.parent_id = pid; }
         if( cid != null ) { this.childedit.content_id = cid; }
         if( this.childedit.content_id > 0 ) {
-            M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID,
+            M.api.getJSONCb('ciniki.info.contentGet', {'tnid':M.curTenantID,
                 'content_id':this.childedit.content_id, 'files':'yes'}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -217,7 +217,7 @@ function ciniki_info_jobs() {
             var c = this.childedit.serializeFormData('no');
             if( c != null ) {
                 M.api.postJSONFormData('ciniki.info.contentUpdate', 
-                    {'business_id':M.curBusinessID, 'content_id':this.childedit.content_id}, c, function(rsp) {
+                    {'tnid':M.curTenantID, 'content_id':this.childedit.content_id}, c, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
                             return false;
@@ -230,7 +230,7 @@ function ciniki_info_jobs() {
         } else {
             var c = this.childedit.serializeFormData('yes');
             M.api.postJSONFormData('ciniki.info.contentAdd', 
-                {'business_id':M.curBusinessID, 'content_type':this.content_type,
+                {'tnid':M.curTenantID, 'content_type':this.content_type,
                 'parent_id':this.childedit.parent_id}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -248,7 +248,7 @@ function ciniki_info_jobs() {
         if( this.childedit.content_id == 0 ) {
             var c = this.childedit.serializeFormData('yes');
             M.api.postJSONFormData('ciniki.info.contentAdd', 
-                {'business_id':M.curBusinessID, 'content_type':this.content_type,
+                {'tnid':M.curTenantID, 'content_type':this.content_type,
                 'parent_id':this.childedit.parent_id}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -264,7 +264,7 @@ function ciniki_info_jobs() {
 
     this.updateChildFiles = function() {
         if( M.ciniki_info_jobs.childedit.content_id > 0 ) {
-            M.api.getJSONCb('ciniki.info.contentGet', {'business_id':M.curBusinessID, 
+            M.api.getJSONCb('ciniki.info.contentGet', {'tnid':M.curTenantID, 
                 'content_id':M.ciniki_info_jobs.childedit.content_id, 'files':'yes'}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -283,7 +283,7 @@ function ciniki_info_jobs() {
 
     this.deleteChild = function() {
         if( confirm('Are you sure you want to delete this jobs?') ) {
-            var rsp = M.api.getJSONCb('ciniki.info.contentDelete', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.info.contentDelete', {'tnid':M.curTenantID, 
                 'content_id':this.childedit.content_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);

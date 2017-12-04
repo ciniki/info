@@ -2,13 +2,13 @@
 //
 // Description
 // -----------
-// This method will delete a content from the business.
+// This method will delete a content from the tenant.
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business the content is attached to.
+// tnid:         The ID of the tenant the content is attached to.
 // content_id:          The ID of the content to be removed.
 //
 // Returns
@@ -21,7 +21,7 @@ function ciniki_info_contentDelete(&$ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'content_id'=>array('required'=>'yes', 'default'=>'', 'blank'=>'yes', 'name'=>'Content'), 
         ));
     if( $rc['stat'] != 'ok' ) {
@@ -30,10 +30,10 @@ function ciniki_info_contentDelete(&$ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id as owner
+    // Check access to tnid as owner
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'private', 'checkAccess');
-    $ac = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.contentDelete');
+    $ac = ciniki_info_checkAccess($ciniki, $args['tnid'], 'ciniki.info.contentDelete');
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }
@@ -42,7 +42,7 @@ function ciniki_info_contentDelete(&$ciniki) {
     // Get the uuid of the content to be deleted
     //
     $strsql = "SELECT uuid FROM ciniki_info_content "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
@@ -73,7 +73,7 @@ function ciniki_info_contentDelete(&$ciniki) {
     // Remove the images
     //
     $strsql = "SELECT id, uuid, image_id FROM ciniki_info_content_images "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND content_id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.info', 'image');
@@ -85,7 +85,7 @@ function ciniki_info_contentDelete(&$ciniki) {
         $images = $rc['rows'];
         
         foreach($images as $iid => $image) {
-            $rc = ciniki_core_objectDelete($ciniki, $args['business_id'], 'ciniki.info.content_image', 
+            $rc = ciniki_core_objectDelete($ciniki, $args['tnid'], 'ciniki.info.content_image', 
                 $image['id'], $image['uuid'], 0x04);
             if( $rc['stat'] != 'ok' ) {
                 ciniki_core_dbTransactionRollback($ciniki, 'ciniki.info');
@@ -99,7 +99,7 @@ function ciniki_info_contentDelete(&$ciniki) {
     //
     $strsql = "SELECT id, uuid "
         . "FROM ciniki_info_content_files "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND content_id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.info', 'file');
@@ -110,7 +110,7 @@ function ciniki_info_contentDelete(&$ciniki) {
     if( isset($rc['rows']) && count($rc['rows']) > 0 ) {
         $files = $rc['rows'];
         foreach($files as $fid => $file) {
-            $rc = ciniki_core_objectDelete($ciniki, $args['business_id'], 'ciniki.info.content_file', 
+            $rc = ciniki_core_objectDelete($ciniki, $args['tnid'], 'ciniki.info.content_file', 
                 $file['id'], $file['uuid'], 0x04);
             if( $rc['stat'] != 'ok' ) {
                 ciniki_core_dbTransactionRollback($ciniki, 'ciniki.info');
@@ -122,7 +122,7 @@ function ciniki_info_contentDelete(&$ciniki) {
     //
     // Remove the content
     //
-    $rc = ciniki_core_objectDelete($ciniki, $args['business_id'], 'ciniki.info.content', 
+    $rc = ciniki_core_objectDelete($ciniki, $args['tnid'], 'ciniki.info.content', 
         $args['content_id'], $item['uuid'], 0x04);
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.info');
@@ -138,11 +138,11 @@ function ciniki_info_contentDelete(&$ciniki) {
     }
 
     //
-    // Update the last_change date in the business modules
+    // Update the last_change date in the tenant modules
     // Ignore the result, as we don't want to stop user updates if this fails.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-    ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'info');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
+    ciniki_tenants_updateModuleChangeDate($ciniki, $args['tnid'], 'ciniki', 'info');
 
     return array('stat'=>'ok');
 }

@@ -1,5 +1,5 @@
 //
-// The testimonials for a business
+// The testimonials for a tenant
 //
 function ciniki_info_testimonials() {
     this.webFlags = {
@@ -64,7 +64,7 @@ function ciniki_info_testimonials() {
 //          return this.data[s];
 //      };
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.info.testimonialHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.info.testimonialHistory', 'args':{'tnid':M.curTenantID, 
                 'testimonial_id':this.testimonial_id, 'field':i}};
         }
 //      this.edit.addDropImage = function(iid) {
@@ -101,7 +101,7 @@ function ciniki_info_testimonials() {
         //
         this.main.data = {};
         M.api.getJSONCb('ciniki.info.testimonialList', 
-            {'business_id':M.curBusinessID}, function(rsp) {
+            {'tnid':M.curTenantID}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -118,7 +118,7 @@ function ciniki_info_testimonials() {
         if( this.edit.testimonial_id > 0 ) {
             this.edit.sections._buttons.buttons.delete.visible = 'yes';
             var rsp = M.api.getJSONCb('ciniki.info.testimonialGet', 
-                {'business_id':M.curBusinessID, 'testimonial_id':this.edit.testimonial_id}, function(rsp) {
+                {'tnid':M.curTenantID, 'testimonial_id':this.edit.testimonial_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -142,7 +142,7 @@ function ciniki_info_testimonials() {
             var c = this.edit.serializeForm('no');
             if( c != '' ) {
                 M.api.postJSONFormData('ciniki.info.testimonialUpdate', 
-                    {'business_id':M.curBusinessID, 'testimonial_id':this.edit.testimonial_id}, c,
+                    {'tnid':M.curTenantID, 'testimonial_id':this.edit.testimonial_id}, c,
                         function(rsp) {
                             if( rsp.stat != 'ok' ) {
                                 M.api.err(rsp);
@@ -157,7 +157,7 @@ function ciniki_info_testimonials() {
         } else {
             var c = this.edit.serializeForm('yes');
             M.api.postJSONFormData('ciniki.info.testimonialAdd', 
-                {'business_id':M.curBusinessID}, c, function(rsp) {
+                {'tnid':M.curTenantID}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -171,7 +171,7 @@ function ciniki_info_testimonials() {
     this.deleteTestimonial = function() {
         if( confirm('Are you sure you want to delete this testimonial?') ) {
             var rsp = M.api.getJSONCb('ciniki.info.testimonialDelete', 
-                {'business_id':M.curBusinessID, 'testimonial_id':this.edit.testimonial_id}, function(rsp) {
+                {'tnid':M.curTenantID, 'testimonial_id':this.edit.testimonial_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;

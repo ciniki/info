@@ -9,14 +9,14 @@
 // Returns
 // -------
 //
-function ciniki_info_web_testimonials($ciniki, $settings, $business_id) {
+function ciniki_info_web_testimonials($ciniki, $settings, $tnid) {
 
     //
     // Load the testimonials
     //
     $strsql = "SELECT id, sequence, quote, who "
         . "FROM ciniki_info_testimonials "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND (webflags&0x01) = 1 "
         . "ORDER BY testimonial_date ASC, sequence DESC "
         . "";

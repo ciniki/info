@@ -9,7 +9,7 @@
 // Returns
 // -------
 //
-function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
+function ciniki_info_web_pageDetails($ciniki, $settings, $tnid, $args) {
     //
     // Get the main information
     //
@@ -33,10 +33,10 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
         . "FROM ciniki_info_content "
         . "LEFT JOIN ciniki_info_content_images ON ("
             . "ciniki_info_content.id = ciniki_info_content_images.content_id "
-            . "AND ciniki_info_content.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND ciniki_info_content.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND (ciniki_info_content_images.webflags&0x01) = 0 "
             . ") "
-        . "WHERE ciniki_info_content.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE ciniki_info_content.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
     //
     // Permalink or Content Type must be specified
@@ -73,7 +73,7 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
     //
     $strsql = "SELECT id, name, extension, permalink, description "
         . "FROM ciniki_info_content_files "
-        . "WHERE ciniki_info_content_files.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE ciniki_info_content_files.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND ciniki_info_content_files.content_id = '" . ciniki_core_dbQuote($ciniki, $content['id']) . "' "
         . "";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
@@ -99,9 +99,9 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
         . "ciniki_info_content_files.description "
         . "FROM ciniki_info_content, ciniki_info_content_files "
         . "WHERE ciniki_info_content.parent_id = '" . ciniki_core_dbQuote($ciniki, $content['id']) . "' "
-        . "AND ciniki_info_content.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "AND ciniki_info_content.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND ciniki_info_content.id = ciniki_info_content_files.content_id "
-        . "AND ciniki_info_content_files.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "AND ciniki_info_content_files.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
         array('container'=>'children', 'fname'=>'id', 
@@ -125,7 +125,7 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
         . "'no' AS is_details "
         . "FROM ciniki_info_content "
         . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $content['id']) . "' "
-        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "ORDER BY category, sequence, title "
         . "";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.customers', array(
@@ -162,11 +162,11 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $business_id, $args) {
     //
     // Get any sponsors for this page, and that references for sponsors is enabled
     //
-    if( isset($ciniki['business']['modules']['ciniki.sponsors']) 
-        && ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+    if( isset($ciniki['tenant']['modules']['ciniki.sponsors']) 
+        && ($ciniki['tenant']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'web', 'sponsorRefList');
-        $rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $business_id, 
+        $rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $tnid, 
             'ciniki.info.content', $content['id']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;

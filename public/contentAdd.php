@@ -16,7 +16,7 @@ function ciniki_info_contentAdd(&$ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'parent_id'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'0', 'name'=>'Parent'), 
         'content_type'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Content Type'), 
         'title'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Title'), 
@@ -37,10 +37,10 @@ function ciniki_info_contentAdd(&$ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'private', 'checkAccess');
-    $rc = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.contentAdd'); 
+    $rc = ciniki_info_checkAccess($ciniki, $args['tnid'], 'ciniki.info.contentAdd'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     } 
@@ -74,7 +74,7 @@ function ciniki_info_contentAdd(&$ciniki) {
     // Check the permalink doesn't already exist
     //
     $strsql = "SELECT id, title, permalink FROM ciniki_info_content "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND parent_id = '" . ciniki_core_dbQuote($ciniki, $args['parent_id']) . "' "
         . "AND permalink = '" . ciniki_core_dbQuote($ciniki, $args['permalink']) . "' "
         . "";
@@ -92,7 +92,7 @@ function ciniki_info_contentAdd(&$ciniki) {
     if( !isset($args['sequence']) || $args['sequence'] == '' || $args['sequence'] == '0' ) {
         $strsql = "SELECT MAX(sequence) AS max_sequence "
             . "FROM ciniki_info_content "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND content_type = '" . ciniki_core_dbQuote($ciniki, $args['content_type']) . "' "
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.info', 'seq');
@@ -110,6 +110,6 @@ function ciniki_info_contentAdd(&$ciniki) {
     // Add the image to the database
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
-    return ciniki_core_objectAdd($ciniki, $args['business_id'], 'ciniki.info.content', $args, 0x07);
+    return ciniki_core_objectAdd($ciniki, $args['tnid'], 'ciniki.info.content', $args, 0x07);
 }
 ?>

@@ -8,7 +8,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:     The ID of the business to get testimonials for.
+// tnid:     The ID of the tenant to get testimonials for.
 //
 // Returns
 // -------
@@ -19,7 +19,7 @@ function ciniki_info_contentList($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -27,10 +27,10 @@ function ciniki_info_contentList($ciniki) {
     $args = $rc['args'];
     
     //  
-    // Check access to business_id as owner, or sys admin. 
+    // Check access to tnid as owner, or sys admin. 
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'private', 'checkAccess');
-    $rc = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.contentList');
+    $rc = ciniki_info_checkAccess($ciniki, $args['tnid'], 'ciniki.info.contentList');
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
@@ -41,7 +41,7 @@ function ciniki_info_contentList($ciniki) {
     //
     $strsql = "SELECT content_type, title "
         . "FROM ciniki_info_content "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND parent_id = 0 "
         . "ORDER BY content_type "
         . "";

@@ -7,7 +7,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business to update the content for.
+// tnid:         The ID of the tenant to update the content for.
 //
 // Returns
 // -------
@@ -19,7 +19,7 @@ function ciniki_info_contentUpdate(&$ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'content_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Content ID'), 
         'parent_id'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Parent'), 
         'content_type'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Content Type'), 
@@ -41,10 +41,10 @@ function ciniki_info_contentUpdate(&$ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'private', 'checkAccess');
-    $rc = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.contentUpdate'); 
+    $rc = ciniki_info_checkAccess($ciniki, $args['tnid'], 'ciniki.info.contentUpdate'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
@@ -54,7 +54,7 @@ function ciniki_info_contentUpdate(&$ciniki) {
     //
     $strsql = "SELECT id, content_type, parent_id, uuid "
         . "FROM ciniki_info_content "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.info', 'item');
@@ -80,7 +80,7 @@ function ciniki_info_contentUpdate(&$ciniki) {
         // Make sure the permalink is unique
         //
         $strsql = "SELECT id, title, permalink FROM ciniki_info_content "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND parent_id = '" . ciniki_core_dbQuote($ciniki, $item['parent_id']) . "' "
             . "AND permalink = '" . ciniki_core_dbQuote($ciniki, $args['permalink']) . "' "
             . "AND id <> '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
@@ -98,6 +98,6 @@ function ciniki_info_contentUpdate(&$ciniki) {
     // Update the content in the database
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectUpdate');
-    return ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.info.content', $args['content_id'], $args);
+    return ciniki_core_objectUpdate($ciniki, $args['tnid'], 'ciniki.info.content', $args['content_id'], $args);
 }
 ?>

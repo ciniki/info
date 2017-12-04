@@ -1,5 +1,5 @@
 //
-// This app will handle the listing, additions and deletions of events.  These are associated business.
+// This app will handle the listing, additions and deletions of events.  These are associated tenant.
 //
 function ciniki_info_main() {
     //
@@ -9,7 +9,7 @@ function ciniki_info_main() {
         //
         // events panel
         //
-        this.menu = new M.panel('Business Information',
+        this.menu = new M.panel('Tenant Information',
             'ciniki_info_main', 'menu',
             'mc', 'medium', 'sectioned', 'ciniki.info.main.menu');
         this.menu.sections = {
@@ -68,7 +68,7 @@ function ciniki_info_main() {
         } 
 
         for(i in this.menu.sections.content.list) {
-            if( (M.curBusiness.modules['ciniki.info'].flags&Math.pow(2, i-1)) > 0 ) {
+            if( (M.curTenant.modules['ciniki.info'].flags&Math.pow(2, i-1)) > 0 ) {
                 this.menu.sections.content.list[i].visible = 'yes';
             } else {
                 this.menu.sections.content.list[i].visible = 'no';
@@ -79,7 +79,7 @@ function ciniki_info_main() {
     }
 
     this.showMenu = function(cb) {
-        M.api.getJSONCb('ciniki.info.contentList', {'business_id':M.curBusinessID}, function(rsp) {
+        M.api.getJSONCb('ciniki.info.contentList', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;

@@ -8,7 +8,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business to remove the item from.
+// tnid:         The ID of the tenant to remove the item from.
 // file_id:             The ID of the file to remove.
 // 
 // Returns
@@ -21,7 +21,7 @@ function ciniki_info_contentFileDelete(&$ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'file_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'File'), 
         )); 
     if( $rc['stat'] != 'ok' ) { 
@@ -31,10 +31,10 @@ function ciniki_info_contentFileDelete(&$ciniki) {
     
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'private', 'checkAccess');
-    $rc = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.contentFileDelete'); 
+    $rc = ciniki_info_checkAccess($ciniki, $args['tnid'], 'ciniki.info.contentFileDelete'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
@@ -43,7 +43,7 @@ function ciniki_info_contentFileDelete(&$ciniki) {
     // Get the uuid of the content item to be deleted
     //
     $strsql = "SELECT uuid FROM ciniki_info_content_files "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND id = '" . ciniki_core_dbQuote($ciniki, $args['file_id']) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.info', 'file');
@@ -56,6 +56,6 @@ function ciniki_info_contentFileDelete(&$ciniki) {
     $uuid = $rc['file']['uuid'];
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectDelete');
-    return ciniki_core_objectDelete($ciniki, $args['business_id'], 'ciniki.info.content_file', $args['file_id'], $uuid, 0x07);
+    return ciniki_core_objectDelete($ciniki, $args['tnid'], 'ciniki.info.content_file', $args['file_id'], $uuid, 0x07);
 }
 ?>

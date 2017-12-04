@@ -8,7 +8,7 @@
 # ------
 # id:               The ID assigned to the content.
 # uuid:             The Universal Unique ID.
-# business_id:      The business the content is attached to.
+# tnid:             The tenant the content is attached to.
 #
 # sequence:         The order the testimonial should go.
 # quote:            The testimonial.
@@ -30,7 +30,7 @@
 create table ciniki_info_testimonials (
     id int not null auto_increment,
     uuid char(36) not null,
-    business_id int not null,
+    tnid int not null,
     sequence tinyint unsigned not null,
     quote varchar(10000) not null,
     who varchar(255) not null,
@@ -42,5 +42,5 @@ create table ciniki_info_testimonials (
     date_added datetime not null,
     last_updated datetime not null,
     primary key (id),
-    index sync (business_id, uuid, last_updated)
+    index sync (tnid, uuid, last_updated)
 ) ENGINE='InnoDB', COMMENT='v1.01';

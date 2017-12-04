@@ -16,7 +16,7 @@ function ciniki_info_testimonialAdd(&$ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'sequence'=>array('required'=>'no', 'default'=>'1', 'blank'=>'yes', 'name'=>'Sequence'),
         'quote'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'', 'name'=>'Quote'), 
         'who'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'', 'name'=>'Who'), 
@@ -33,10 +33,10 @@ function ciniki_info_testimonialAdd(&$ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'private', 'checkAccess');
-    $rc = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.testimonialAdd'); 
+    $rc = ciniki_info_checkAccess($ciniki, $args['tnid'], 'ciniki.info.testimonialAdd'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     } 
@@ -47,7 +47,7 @@ function ciniki_info_testimonialAdd(&$ciniki) {
     if( !isset($args['sequence']) || $args['sequence'] == '' || $args['sequence'] == '0' ) {
         $strsql = "SELECT MAX(sequence) AS max_sequence "
             . "FROM ciniki_info_testimonials "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.info', 'seq');
         if( $rc['stat'] != 'ok' ) { 
@@ -64,6 +64,6 @@ function ciniki_info_testimonialAdd(&$ciniki) {
     // Add the testimonial to the database
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
-    return ciniki_core_objectAdd($ciniki, $args['business_id'], 'ciniki.info.testimonial', $args, 0x07);
+    return ciniki_core_objectAdd($ciniki, $args['tnid'], 'ciniki.info.testimonial', $args, 0x07);
 }
 ?>

@@ -7,7 +7,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business.
+// tnid:         The ID of the tenant.
 //
 // Returns
 // -------
@@ -18,7 +18,7 @@ function ciniki_info_contentGet($ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'content_id'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Content'),
         'content_type'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Content Type'),
         'images'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Images'),
@@ -33,10 +33,10 @@ function ciniki_info_contentGet($ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'private', 'checkAccess');
-    $rc = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.contentGet'); 
+    $rc = ciniki_info_checkAccess($ciniki, $args['tnid'], 'ciniki.info.contentGet'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
@@ -62,7 +62,7 @@ function ciniki_info_contentGet($ciniki) {
         . "ciniki_info_content.excerpt, "
         . "ciniki_info_content.content "
         . "FROM ciniki_info_content "
-        . "WHERE ciniki_info_content.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE ciniki_info_content.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "";
     //
     // Content ID or Type must be specified
@@ -128,7 +128,7 @@ function ciniki_info_contentGet($ciniki) {
             // Add the blank content record
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
-            $rc = ciniki_core_objectAdd($ciniki, $args['business_id'], 'ciniki.info.content', $content, 0x07);
+            $rc = ciniki_core_objectAdd($ciniki, $args['tnid'], 'ciniki.info.content', $content, 0x07);
             if( $rc['stat'] != 'ok' ) { 
                 return $rc;
             }
@@ -157,7 +157,7 @@ function ciniki_info_contentGet($ciniki) {
         $strsql = "SELECT id, name, image_id, webflags "
             . "FROM ciniki_info_content_images "
             . "WHERE content_id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
-            . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "";
         $rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.info', array(
             array('container'=>'images', 'fname'=>'id', 'name'=>'image',
@@ -171,7 +171,7 @@ function ciniki_info_contentGet($ciniki) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadCacheThumbnail');
             foreach($content['images'] as $inum => $img) {
                 if( isset($img['image']['image_id']) && $img['image']['image_id'] > 0 ) {
-                    $rc = ciniki_images_loadCacheThumbnail($ciniki, $args['business_id'], 
+                    $rc = ciniki_images_loadCacheThumbnail($ciniki, $args['tnid'], 
                         $img['image']['image_id'], 75);
                     if( $rc['stat'] != 'ok' ) {
                         return $rc;
@@ -188,7 +188,7 @@ function ciniki_info_contentGet($ciniki) {
     if( isset($args['files']) && $args['files'] == 'yes' ) {
         $strsql = "SELECT id, name, extension, permalink "
             . "FROM ciniki_info_content_files "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND ciniki_info_content_files.content_id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
             . "";
         $rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.info', array(
@@ -212,7 +212,7 @@ function ciniki_info_contentGet($ciniki) {
         $strsql = "SELECT id, title "
             . "FROM ciniki_info_content "
             . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
-            . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "";
         $rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.info', array(
             array('container'=>'children', 'fname'=>'id', 'name'=>'child',
@@ -232,11 +232,11 @@ function ciniki_info_contentGet($ciniki) {
     // Get any sponsors for the content
     //
     if( isset($args['sponsors']) && $args['sponsors'] == 'yes' 
-        && isset($ciniki['business']['modules']['ciniki.sponsors']) 
-        && ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+        && isset($ciniki['tenant']['modules']['ciniki.sponsors']) 
+        && ($ciniki['tenant']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'hooks', 'sponsorList');
-        $rc = ciniki_sponsors_hooks_sponsorList($ciniki, $args['business_id'], 
+        $rc = ciniki_sponsors_hooks_sponsorList($ciniki, $args['tnid'], 
             array('object'=>'ciniki.info.content', 'object_id'=>$args['content_id']));
         if( $rc['stat'] != 'ok' ) {
             return $rc;

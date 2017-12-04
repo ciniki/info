@@ -7,7 +7,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business.
+// tnid:         The ID of the tenant.
 // testimonial_id:      The ID of the testimonial to get.
 //
 // Returns
@@ -19,7 +19,7 @@ function ciniki_info_testimonialGet($ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'testimonial_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Testimonial'),
         )); 
     if( $rc['stat'] != 'ok' ) { 
@@ -29,10 +29,10 @@ function ciniki_info_testimonialGet($ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'private', 'checkAccess');
-    $rc = ciniki_info_checkAccess($ciniki, $args['business_id'], 'ciniki.info.testimonialGet'); 
+    $rc = ciniki_info_checkAccess($ciniki, $args['tnid'], 'ciniki.info.testimonialGet'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
@@ -54,7 +54,7 @@ function ciniki_info_testimonialGet($ciniki) {
         . "image_caption, "
         . "image_url "
         . "FROM ciniki_info_testimonials "
-        . "WHERE ciniki_info_testimonials.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE ciniki_info_testimonials.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND ciniki_info_testimonials.id = '" . ciniki_core_dbQuote($ciniki, $args['testimonial_id']) . "' "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');

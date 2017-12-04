@@ -10,12 +10,12 @@
 // Returns
 // -------
 //
-function ciniki_info_web_pages($ciniki, $settings, $business_id) {
+function ciniki_info_web_pages($ciniki, $settings, $tnid) {
 
     $strsql = "SELECT id, "
         . "content_type, title, permalink, sequence "
         . "FROM ciniki_info_content "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND parent_id = 0 "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');

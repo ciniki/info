@@ -1,5 +1,5 @@
 //
-// The files manager for business info
+// The files manager for tenant info
 //
 function ciniki_info_contentfiles() {
     this.init = function() {
@@ -56,7 +56,7 @@ function ciniki_info_contentfiles() {
             return this.data[s];
         };
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.info.contentFileHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.info.contentFileHistory', 'args':{'tnid':M.curTenantID, 
                 'file_id':this.file_id, 'field':i}};
         };
         this.edit.addButton('save', 'Save', 'M.ciniki_info_contentfiles.saveFile();');
@@ -104,7 +104,7 @@ function ciniki_info_contentfiles() {
 
         if( c != '' ) {
             var rsp = M.api.postJSONFormData('ciniki.info.contentFileAdd', 
-                {'business_id':M.curBusinessID, 'content_id':M.ciniki_info_contentfiles.add.content_id}, c,
+                {'tnid':M.curTenantID, 'content_id':M.ciniki_info_contentfiles.add.content_id}, c,
                     function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
@@ -123,7 +123,7 @@ function ciniki_info_contentfiles() {
         if( fid != null ) {
             this.edit.file_id = fid;
         }
-        var rsp = M.api.getJSONCb('ciniki.info.contentFileGet', {'business_id':M.curBusinessID, 
+        var rsp = M.api.getJSONCb('ciniki.info.contentFileGet', {'tnid':M.curTenantID, 
             'file_id':this.edit.file_id}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -140,7 +140,7 @@ function ciniki_info_contentfiles() {
 
         if( c != '' ) {
             var rsp = M.api.postJSONFormData('ciniki.info.contentFileUpdate', 
-                {'business_id':M.curBusinessID, 'file_id':this.edit.file_id}, c,
+                {'tnid':M.curTenantID, 'file_id':this.edit.file_id}, c,
                     function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
@@ -154,7 +154,7 @@ function ciniki_info_contentfiles() {
 
     this.deleteFile = function() {
         if( confirm('Are you sure you want to delete \'' + this.edit.data.name + '\'?  All information about it will be removed and unrecoverable.') ) {
-            var rsp = M.api.getJSONCb('ciniki.info.contentFileDelete', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.info.contentFileDelete', {'tnid':M.curTenantID, 
                 'file_id':M.ciniki_info_contentfiles.edit.file_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -166,6 +166,6 @@ function ciniki_info_contentfiles() {
     };
 
     this.downloadFile = function(fid) {
-        M.api.openFile('ciniki.info.contentFileDownload', {'business_id':M.curBusinessID, 'file_id':fid});
+        M.api.openFile('ciniki.info.contentFileDownload', {'tnid':M.curTenantID, 'file_id':fid});
     };
 }
