@@ -76,6 +76,9 @@ function ciniki_info_contentUpdate(&$ciniki) {
         } else {
             $args['permalink'] = ciniki_core_makePermalink($ciniki, $item['uuid']);
         }
+        if( $item['content_type'] == 7 ) {
+            $args['permalink'] = 'membership';
+        }
         //
         // Make sure the permalink is unique
         //
