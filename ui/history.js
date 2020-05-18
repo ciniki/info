@@ -65,7 +65,7 @@ function ciniki_info_history() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_info_history', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         }
 

@@ -137,7 +137,7 @@ function ciniki_info_jobs() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_info_jobs', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         }
 
@@ -282,15 +282,15 @@ function ciniki_info_jobs() {
     };
 
     this.deleteChild = function() {
-        if( confirm('Are you sure you want to delete this jobs?') ) {
+        M.confirm('Are you sure you want to delete this jobs?',null,function() {
             var rsp = M.api.getJSONCb('ciniki.info.contentDelete', {'tnid':M.curTenantID, 
-                'content_id':this.childedit.content_id}, function(rsp) {
+                'content_id':M.ciniki_info_jobs.childedit.content_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
                     }
                     M.ciniki_info_jobs.childedit.close();
                 });
-        }
+        });
     };
 }

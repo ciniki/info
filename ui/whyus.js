@@ -105,7 +105,7 @@ function ciniki_info_whyus() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_info_whyus', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         }
 

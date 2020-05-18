@@ -112,7 +112,7 @@ function ciniki_info_volunteer() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_info_volunteer', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         }
 

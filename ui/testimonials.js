@@ -88,7 +88,7 @@ function ciniki_info_testimonials() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_info_testimonials', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         }
 
@@ -169,15 +169,15 @@ function ciniki_info_testimonials() {
     };
 
     this.deleteTestimonial = function() {
-        if( confirm('Are you sure you want to delete this testimonial?') ) {
+        M.confirm('Are you sure you want to delete this testimonial?',null,function() {
             var rsp = M.api.getJSONCb('ciniki.info.testimonialDelete', 
-                {'tnid':M.curTenantID, 'testimonial_id':this.edit.testimonial_id}, function(rsp) {
+                {'tnid':M.curTenantID, 'testimonial_id':M.ciniki_info_testimonials.edit.testimonial_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
                     }
                     M.ciniki_info_testimonials.edit.close();
                 });
-        }
+        });
     };
 }

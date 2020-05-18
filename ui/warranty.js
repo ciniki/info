@@ -65,7 +65,7 @@ function ciniki_info_warranty() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_info_warranty', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         }
 

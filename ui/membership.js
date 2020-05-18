@@ -149,7 +149,7 @@ function ciniki_info_membership() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_info_membership', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         }
 
@@ -279,16 +279,16 @@ function ciniki_info_membership() {
     };
 
     this.deleteFile = function() {
-        if( confirm('Are you sure you want to delete \'' + this.editfile.data.name + '\'?  All information about the file will be removed and unrecoverable.') ) {
+        M.confirm('Are you sure you want to delete \'' + this.editfile.data.name + '\'?  All information about the file will be removed and unrecoverable.',null,function() {
             M.api.getJSONCb('ciniki.info.contentFileDelete', {'tnid':M.curTenantID, 
-                'file_id':this.editfile.file_id}, function(rsp) {
+                'file_id':M.ciniki_info_membership.editfile.file_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
                     } 
                     M.ciniki_info_membership.editfile.close();
                 });
-        }
+        });
     };
 
     this.downloadFile = function(fid) {

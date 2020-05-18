@@ -72,7 +72,7 @@ function ciniki_info_contentfiles() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_info_contentfiles', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         }
 
@@ -81,7 +81,7 @@ function ciniki_info_contentfiles() {
         } else if( args.content_id != null && args.content_id > 0 ) {
             this.showAddFile(cb, args.content_id);
         } else {
-            alert('Invalid request');
+            M.alert('Invalid request');
         }
     }
 
@@ -153,7 +153,7 @@ function ciniki_info_contentfiles() {
     };
 
     this.deleteFile = function() {
-        if( confirm('Are you sure you want to delete \'' + this.edit.data.name + '\'?  All information about it will be removed and unrecoverable.') ) {
+        M.confirm('Are you sure you want to delete \'' + this.edit.data.name + '\'?  All information about it will be removed and unrecoverable.',null,function() {
             var rsp = M.api.getJSONCb('ciniki.info.contentFileDelete', {'tnid':M.curTenantID, 
                 'file_id':M.ciniki_info_contentfiles.edit.file_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
@@ -162,7 +162,7 @@ function ciniki_info_contentfiles() {
                     } 
                     M.ciniki_info_contentfiles.edit.close();
                 });
-        }
+        });
     };
 
     this.downloadFile = function(fid) {
