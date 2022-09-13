@@ -134,7 +134,7 @@ function ciniki_info_web_pageDetails($ciniki, $settings, $tnid, $args) {
         array('container'=>'children', 'fname'=>'category', 
             'fields'=>array('name'=>'category')),
         array('container'=>'list', 'fname'=>'id', 
-            'fields'=>array('id', 'title', 'permalink', 'image_id'=>'primary_image_id',
+            'fields'=>array('id', 'title', 'image_id'=>'primary_image_id',
                 'description'=>'content', 'is_details')),
         ));
     if( $rc['stat'] != 'ok' ) {
