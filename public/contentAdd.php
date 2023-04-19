@@ -68,7 +68,7 @@ function ciniki_info_contentAdd(&$ciniki) {
         } else {
             $args['permalink'] = ciniki_core_makePermalink($ciniki, $args['uuid']);
         }
-        if( $item['content_type'] == 7 ) {
+        if( $args['content_type'] == 7 ) {
             $args['permalink'] = 'membership';
         }
     }
